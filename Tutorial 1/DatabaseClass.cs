@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Tutorial_1
+namespace DatabaseLib
 {
     public class DatabaseClass
     {
@@ -21,10 +21,45 @@ namespace Tutorial_1
             DatabaseGenerator newGenerator = new DatabaseGenerator();
             for (int i = 0; i < 1000; i++)
             {
-                newGenerator.GetNextAccount(out pin,out acctNo,out firstName,out lastName,out balance);
+                newGenerator.GetNextAccount(out pin, out acctNo, out firstName, out lastName, out balance);
                 DataStruct currAccount = new DataStruct(acctNo, pin, balance, firstName, lastName);
                 dataStruct.Add(currAccount);
             }
+        }
+
+        public uint GetAcctNoByIndex(int index)
+        {
+            DataStruct returnAccount = dataStruct[index];
+            return returnAccount.acctNo;
+        }
+
+        public uint GetPINByIndex(int index)
+        {
+            DataStruct returnAccount = dataStruct[index];
+            return returnAccount.pin;
+        }
+
+        public string GetFirstNameByIndex(int index)
+        {
+            DataStruct returnAccount = dataStruct[index];
+            return returnAccount.firstName;
+        }
+
+        public string GetLastNameByIndex(int index)
+        {
+            DataStruct returnAccount = dataStruct[index];
+            return returnAccount.lastName;
+        }
+
+        public int GetBalanceByIndex(int index)
+        {
+            DataStruct returnAccount = dataStruct[index];
+            return returnAccount.balance;
+        }
+
+        public int GetNumRecords()
+        {
+            return dataStruct.Count;
         }
     }
 }

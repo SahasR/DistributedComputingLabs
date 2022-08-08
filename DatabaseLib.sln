@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32630.192
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tutorial 1", "Tutorial 1\Tutorial 1.csproj", "{08838FAC-C811-4D74-B85A-4C0538B2CFAA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseLib", "Tutorial 1\DatabaseLib.csproj", "{08838FAC-C811-4D74-B85A-4C0538B2CFAA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
