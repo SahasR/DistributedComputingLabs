@@ -11,7 +11,7 @@ namespace BankServer
     [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Multiple, UseSynchronizationContext = false)]
     internal class BankServerImplementation : BankServerInterface
     {
-        private DatabaseClass database;
+        DatabaseClass database;
         public BankServerImplementation()
         {
             database = new DatabaseClass();

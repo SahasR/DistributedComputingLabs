@@ -53,9 +53,9 @@ namespace BankClient
 
             FNameBox.Text = fName;
             LNameBox.Text = lName;
-            Balance.Text = bal.ToString();
+            Balance.Text = bal.ToString("C");
             AcctNo.Text = acct.ToString();
-            Pin.Text = pin.ToString();
+            Pin.Text = pin.ToString("D4");
         }
     }
 }

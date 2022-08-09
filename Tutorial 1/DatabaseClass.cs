@@ -19,7 +19,9 @@ namespace DatabaseLib
             string lastName;
             int balance;
             DatabaseGenerator newGenerator = new DatabaseGenerator();
-            for (int i = 0; i < 1000; i++)
+            Random rand = new Random(1);
+            int numElements = rand.Next(0, 1000);
+            for (int i = 0; i < numElements; i++)
             {
                 newGenerator.GetNextAccount(out pin, out acctNo, out firstName, out lastName, out balance);
                 DataStruct currAccount = new DataStruct(acctNo, pin, balance, firstName, lastName);

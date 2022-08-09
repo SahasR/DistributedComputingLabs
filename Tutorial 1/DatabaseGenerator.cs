@@ -10,7 +10,7 @@ namespace DatabaseLib
     {
         private string GetFirstName()
         {
-            Random random = new Random();
+            Random random = new Random(1);
             string[] firstNames = { "Sahas", "Abinaya", "Venumi", "Kapila", "Anurudda", "Pathum" };
             int randomNumber = random.Next(0, 6);
             string firstName = firstNames[randomNumber];
@@ -19,7 +19,7 @@ namespace DatabaseLib
 
         private string GetLastName()
         {
-            Random random = new Random();
+            Random random = new Random(1);
             string[] lastNames = { "Gunasekara", "Sritharan", "Kaluarachchi", "Kaluarachchi", "Padeniya", "Nissanka" };
             int randomNumber = random.Next(0, 6);
             string lastName = lastNames[randomNumber];
@@ -28,21 +28,21 @@ namespace DatabaseLib
 
         private uint GetPIN()
         {
-            Random random = new Random();
+            Random random = new Random(1);
             uint pin = (uint)random.Next(0, 10000);
             return pin;
         }
 
         private uint GetAcctNo()
         {
-            Random random = new Random();
+            Random random = new Random(1);
             uint accNum = (uint)random.Next(0, 10000000);
             return accNum;
         }
 
         private int GetBalance()
         {
-            Random random = new Random();
+            Random random = new Random(1);
             int balance = random.Next(0, 1000000000);
             return balance;
         }
