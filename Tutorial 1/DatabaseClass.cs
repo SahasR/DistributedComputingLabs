@@ -23,7 +23,7 @@ namespace DatabaseLib
             int numElements = rand.Next(0, 1000);
             for (int i = 0; i < numElements; i++)
             {
-                newGenerator.GetNextAccount(out pin, out acctNo, out firstName, out lastName, out balance);
+                newGenerator.GetNextAccount(out pin, out acctNo, out firstName, out lastName, out balance, i);
                 DataStruct currAccount = new DataStruct(acctNo, pin, balance, firstName, lastName);
                 dataStruct.Add(currAccount);
             }

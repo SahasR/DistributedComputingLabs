@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <TextBox Name ="FNameBox" HorizontalAlignment="Center" Margin="0,28,0,0" TextWrapping="Wrap" Text="First Name" VerticalAlignment="Top" Width="288" Height="33" RenderTransformOrigin="0.5,0.5">
+        <TextBox Name ="FNameBox" HorizontalAlignment="Left" Margin="258,32,0,0" TextWrapping="Wrap" Text="First Name" VerticalAlignment="Top" Width="288" Height="33" RenderTransformOrigin="0.5,0.5">
             <TextBox.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform ScaleX="-1" ScaleY="-1"/>
@@ -37,7 +37,7 @@
                 </TransformGroup>
             </TextBox.RenderTransform>
         </TextBox>
-        <TextBox x:Name ="Pin" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Pin" VerticalAlignment="Top" Width="288" Height="33" RenderTransformOrigin="0.5,0.5" Margin="259,186,0,0">
+        <TextBox x:Name ="Pin" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Pin" VerticalAlignment="Top" Width="288" Height="33" RenderTransformOrigin="0.5,0.5" Margin="258,186,0,0">
             <TextBox.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform ScaleX="-1" ScaleY="-1"/>
@@ -47,7 +47,7 @@
                 </TransformGroup>
             </TextBox.RenderTransform>
         </TextBox>
-        <TextBox x:Name ="Balance" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Balance" VerticalAlignment="Top" Width="288" Height="33" RenderTransformOrigin="0.5,0.5" Margin="259,240,0,0">
+        <TextBox x:Name ="Balance" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Balance" VerticalAlignment="Top" Width="288" Height="33" RenderTransformOrigin="0.5,0.5" Margin="258,240,0,0">
             <TextBox.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform ScaleX="-1" ScaleY="-1"/>
@@ -70,6 +70,8 @@
         <Button x:Name="Go" Content="Go!" HorizontalAlignment="Left" Margin="340,317,0,0" VerticalAlignment="Top" Height="30" Width="45" Click="Go_Click"/>
         <TextBlock HorizontalAlignment="Left" Height="0" Margin="451,317,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Width="3"/>
         <TextBlock x:Name="TotalRecs" HorizontalAlignment="Left" Height="30" Margin="470,315,0,0" TextWrapping="Wrap" Text="Total Number of Records: " VerticalAlignment="Top" Width="121"/>
+        <TextBlock x:Name="Request_Counter" HorizontalAlignment="Left" Margin="309,381,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top"/>
+        <Label Content="Request Counter" HorizontalAlignment="Left" Margin="206,376,0,0" VerticalAlignment="Top"/>
 
     </Grid>
 </Window>

@@ -43,9 +43,11 @@ namespace BankClient
         private void Go_Click(object sender, RoutedEventArgs e)
         {
             int index = 0;
-            string fName = "", lName = "";
+            string fName = null, lName = null;
             int bal = 0;
             uint acct = 0, pin = 0;
+            int count = Int32.Parse(Request_Counter.Text);
+            count++;
 
             //On click, Get the index...
             index = Int32.Parse(Index.Text);
@@ -56,6 +58,8 @@ namespace BankClient
             Balance.Text = bal.ToString("C");
             AcctNo.Text = acct.ToString();
             Pin.Text = pin.ToString("D4");
+            Request_Counter.Text = count.ToString();
+
         }
     }
 }
