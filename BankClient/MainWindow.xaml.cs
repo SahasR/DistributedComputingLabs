@@ -64,8 +64,9 @@ namespace BankClient
                     Pin.Text = pin.ToString("D4");
                     Request_Counter.Text = count.ToString();
                 }
-            } catch (FormatException) {}
-            
+            } catch (FaultException<ServerFailureException> ex){
+                Request_Counter.Text = ex.Detail.Operation;
+            } 
 
         }
     }

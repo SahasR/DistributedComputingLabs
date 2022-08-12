@@ -23,11 +23,22 @@ namespace BankServer
 
         public void GetValuesForEntry(int index, out uint acctNo, out uint pin, out int bal, out string fName, out string lName)
         {
-            acctNo = database.GetAcctNoByIndex(index);
-            pin = database.GetPINByIndex(index);
-            bal = database.GetBalanceByIndex(index);
-            fName = database.GetFirstNameByIndex(index);
-            lName = database.GetLastNameByIndex(index);
+            if (index >= 0 && index < database.GetNumRecords())
+            {
+                acctNo = database.GetAcctNoByIndex(index);
+                pin = database.GetPINByIndex(index);
+                bal = database.GetBalanceByIndex(index);
+                fName = database.GetFirstNameByIndex(index);
+                lName = database.GetLastNameByIndex(index);
+            } else
+            {
+                ServerFailureException sf = new ServerFailureException();
+                sf.Operation = "You tried to do something you're not allowed.";
+                sf.ProblemType = "Out of index values";
+                throw new FaultException<ServerFailureException>(sf);
+            }
+            
+            
         }
 
     }

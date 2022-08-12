@@ -14,6 +14,7 @@ namespace BankServer
         int GetNumEntries();
 
         [OperationContract]
+        [FaultContract(typeof(ServerFailureException))]
         void GetValuesForEntry(int index, out uint acctNo, out uint pin, out int bal, out string fName, out string lName);
     }
 }
