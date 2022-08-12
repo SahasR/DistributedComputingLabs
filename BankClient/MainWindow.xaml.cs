@@ -49,13 +49,14 @@ namespace BankClient
             int count = Int32.Parse(Request_Counter.Text);
             count++;
 
-            //On click, Get the index...
-            index = Int32.Parse(Index.Text);
+            
             try
             {
-                if (index >= 0 && index < Int32.Parse(TotalRecs.Text))
+                //On click, Get the index...
+                index = Int32.Parse(Index.Text);
+                if (index > 0 && index <= Int32.Parse(TotalRecs.Text))
                 {
-                    bank.GetValuesForEntry(index, out acct, out pin, out bal, out fName, out lName);
+                    bank.GetValuesForEntry(index - 1, out acct, out pin, out bal, out fName, out lName);
                     FNameBox.Text = fName;
                     LNameBox.Text = lName;
                     Balance.Text = bal.ToString("C");
@@ -63,7 +64,7 @@ namespace BankClient
                     Pin.Text = pin.ToString("D4");
                     Request_Counter.Text = count.ToString();
                 }
-            } catch { }
+            } catch (FormatException) {}
             
 
         }
