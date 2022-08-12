@@ -51,14 +51,20 @@ namespace BankClient
 
             //On click, Get the index...
             index = Int32.Parse(Index.Text);
-            bank.GetValuesForEntry(index, out acct, out pin, out bal, out fName, out lName);
-
-            FNameBox.Text = fName;
-            LNameBox.Text = lName;
-            Balance.Text = bal.ToString("C");
-            AcctNo.Text = acct.ToString();
-            Pin.Text = pin.ToString("D4");
-            Request_Counter.Text = count.ToString();
+            try
+            {
+                if (index >= 0 && index < Int32.Parse(TotalRecs.Text))
+                {
+                    bank.GetValuesForEntry(index, out acct, out pin, out bal, out fName, out lName);
+                    FNameBox.Text = fName;
+                    LNameBox.Text = lName;
+                    Balance.Text = bal.ToString("C");
+                    AcctNo.Text = acct.ToString();
+                    Pin.Text = pin.ToString("D4");
+                    Request_Counter.Text = count.ToString();
+                }
+            } catch { }
+            
 
         }
     }

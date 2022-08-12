@@ -11,8 +11,8 @@ namespace DatabaseLib
         private string GetFirstName(int seed)
         {
             Random random = new Random(seed);
-            string[] firstNames = { "Sahas", "Abinaya", "Venumi", "Kapila", "Anurudda", "Pathum" };
-            int randomNumber = random.Next(0, 6);
+            string[] firstNames = { "Sahas", "Abinaya", "Venumi", "Kapila", "Anurudda", "Pathum", "Nalaka", "Renuja", "Nisal"};
+            int randomNumber = random.Next(0, 9);
             string firstName = firstNames[randomNumber];
             return firstName;
         }
@@ -20,8 +20,8 @@ namespace DatabaseLib
         private string GetLastName(int seed)
         {
             Random random = new Random(seed);
-            string[] lastNames = { "Gunasekara", "Sritharan", "Kaluarachchi", "Kaluarachchi", "Padeniya", "Nissanka" };
-            int randomNumber = random.Next(0, 6);
+            string[] lastNames = { "Gunasekara", "Sritharan", "Kaluarachchi", "Kaluarachchi", "Padeniya", "Nissanka", "Godahewa", "Rajapakse", "Seneviratne"};
+            int randomNumber = random.Next(0, 9);
             string lastName = lastNames[randomNumber];
             return lastName;
         }
