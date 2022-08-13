@@ -9,7 +9,7 @@ using DatabaseLib;
 namespace BankServer
 {
     [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Multiple, UseSynchronizationContext = false)]
-    internal class BankServerImplementation : BankServerInterface
+    public class BankServerImplementation : BankServerInterface
     {
         DatabaseClass database;
         public BankServerImplementation()
