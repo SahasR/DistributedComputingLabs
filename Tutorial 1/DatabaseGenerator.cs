@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -47,13 +48,24 @@ namespace DatabaseLib
             return balance;
         }
 
-        public void GetNextAccount(out uint pin, out uint acctNo, out string firstName, out string lastName, out int balance, int seed)
+        private string GetImage(int seed)
+        {
+            string[] locations = { "C:/Users/sahas/source/repos/DistributedComputingLab01/Tutorial 1/Images/imageedit_3_5955217527.jpg", 
+                "C:/Users/sahas/source/repos/DistributedComputingLab01/Tutorial 1/Images/rsz_1dalle_2022-08-03_225034_-_aladin_driving_a_black_car_van_gogh_styke.png" };
+
+            Random random = new Random(seed);
+            string location = locations[random.Next(0,2)];
+            return location;
+        }
+
+        public void GetNextAccount(out uint pin, out uint acctNo, out string firstName, out string lastName, out int balance, out string image ,int seed)
         {
             pin = GetPIN(seed);
             acctNo = GetAcctNo(seed);
             firstName = GetFirstName(seed);
             lastName = GetLastName(seed);
             balance = GetBalance(seed);
+            image = GetImage(seed);
         }
     }
 }

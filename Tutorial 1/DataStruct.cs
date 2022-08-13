@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,6 +14,7 @@ namespace DatabaseLib
         public int balance;
         public string firstName;
         public string lastName;
+        public string image;
 
         public DataStruct()
         {
@@ -21,15 +23,17 @@ namespace DatabaseLib
             balance = 0;
             firstName = "";
             lastName = "";
+            image = "";
         }
 
-        public DataStruct(uint acctNo, uint pin, int balance, string firstName, string lastName)
+        public DataStruct(uint acctNo, uint pin, int balance, string firstName, string lastName, string image)
         {
             this.acctNo = acctNo;
             this.pin = pin;
             this.balance = balance;
             this.firstName = firstName;
             this.lastName = lastName;
+            this.image = image;
         }
     }
 }

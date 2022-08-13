@@ -72,6 +72,7 @@
         <TextBlock x:Name="TotalRecs" HorizontalAlignment="Left" Height="30" Margin="470,315,0,0" TextWrapping="Wrap" Text="Total Number of Records: " VerticalAlignment="Top" Width="121"/>
         <TextBlock x:Name="Request_Counter" HorizontalAlignment="Left" Margin="309,381,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top"/>
         <Label Content="Request Counter" HorizontalAlignment="Left" Margin="206,376,0,0" VerticalAlignment="Top"/>
+        <Image x:Name="PictureBox" HorizontalAlignment="Left" Height="100" Margin="116,69,0,0" VerticalAlignment="Top" Width="100"/>
 
     </Grid>
 </Window>

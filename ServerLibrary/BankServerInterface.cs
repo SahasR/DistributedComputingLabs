@@ -4,6 +4,7 @@ using System.Linq;
 using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
+using System.Drawing;
 
 namespace BankServer
 {
@@ -15,6 +16,6 @@ namespace BankServer
 
         [OperationContract]
         [FaultContract(typeof(ServerFailureException))]
-        void GetValuesForEntry(int index, out uint acctNo, out uint pin, out int bal, out string fName, out string lName);
+        void GetValuesForEntry(int index, out uint acctNo, out uint pin, out int bal, out string fName, out string lName, out byte[] bitmapBytes);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,13 +19,15 @@ namespace DatabaseLib
             string firstName;
             string lastName;
             int balance;
+            string image;
+
             DatabaseGenerator newGenerator = new DatabaseGenerator();
             Random rand = new Random(1);
             int numElements = rand.Next(0, 1000);
             for (int i = 0; i < numElements; i++)
             {
-                newGenerator.GetNextAccount(out pin, out acctNo, out firstName, out lastName, out balance, i);
-                DataStruct currAccount = new DataStruct(acctNo, pin, balance, firstName, lastName);
+                newGenerator.GetNextAccount(out pin, out acctNo, out firstName, out lastName, out balance, out image ,i);
+                DataStruct currAccount = new DataStruct(acctNo, pin, balance, firstName, lastName, image);
                 dataStruct.Add(currAccount);
             }
         }
@@ -57,6 +60,13 @@ namespace DatabaseLib
         {
             DataStruct returnAccount = dataStruct[index];
             return returnAccount.balance;
+        }
+
+        public Bitmap GetImage(int index)
+        {
+            DataStruct returnAccount = dataStruct[index];
+            Bitmap image = new Bitmap(returnAccount.image, true);
+            return image;
         }
 
         public int GetNumRecords()
