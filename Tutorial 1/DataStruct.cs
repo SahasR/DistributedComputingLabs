@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace DatabaseLib
 {
+    //The instructions to generate this code is given in the assignment specification
     internal class DataStruct
     {
         public uint acctNo;

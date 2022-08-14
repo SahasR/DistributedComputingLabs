@@ -10,7 +10,8 @@ namespace DatabaseLib
     internal class DatabaseGenerator
     {
         private string GetFirstName(int seed)
-        {
+        { //Fairly standard technique where we have a few options and randomly choose inbetween all of them, hopefully permutations give enough of a variance
+            //in out dataset
             Random random = new Random(seed);
             string[] firstNames = { "Sahas", "Abinaya", "Venumi", "Kapila", "Anurudda", "Pathum", "Nalaka", "Renuja", "Nisal"};
             int randomNumber = random.Next(0, 9);
@@ -52,7 +53,9 @@ namespace DatabaseLib
         {
             string[] locations = { "C:/Users/sahas/source/repos/DistributedComputingLab01/Tutorial 1/Images/imageedit_3_5955217527.jpg", 
                 "C:/Users/sahas/source/repos/DistributedComputingLab01/Tutorial 1/Images/rsz_1dalle_2022-08-03_225034_-_aladin_driving_a_black_car_van_gogh_styke.png" };
-
+            //When storing locations I had to store locations as Absolute Paths because this program will have a different working directory when in debug mode
+            //And a different working directory when in final build executable. So these are two placeholder images, often there will be a seperate server with the images loaded
+            //from a URL so it shouldn't be too bad, currently however it is stored inside the .dll file for the Databases.
             Random random = new Random(seed);
             string location = locations[random.Next(0,2)];
             return location;

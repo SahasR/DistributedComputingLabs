@@ -69,8 +69,9 @@ namespace BankClient
                     MemoryStream ms = new MemoryStream(bitmapBytes);
                     Bitmap image = (Bitmap)Bitmap.FromStream(ms);
                     PictureBox.Source = converter(image);
-                    
+                    //Picture Boxes only use ImageSource format so I have a function that creates a ImageSource from BitMap
                     Request_Counter.Text = count.ToString();
+                    //Just to see how many requests you have made
                 }
             } catch (FaultException<ServerFailureException> ex){
                 Request_Counter.Text = ex.Detail.Operation;
