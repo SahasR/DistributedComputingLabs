@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BankServer\BankServer.csproj" />
+    <ProjectReference Include="..\BankBusinessTier\BankBusinessTier.csproj" />
   </ItemGroup>
 
 </Project>

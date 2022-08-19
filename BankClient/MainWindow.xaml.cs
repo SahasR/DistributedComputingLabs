@@ -17,6 +17,7 @@ using System.Windows.Shapes;
 using BankServer;
 using System.Windows.Interop;
 using System.IO;
+using BankBusinessTier;
 
 namespace BankClient
 {
@@ -25,18 +26,18 @@ namespace BankClient
     /// </summary>
     public partial class MainWindow : Window
     {
-        private BankServerInterface bank;
+        private BusinessServerInterface bank;
         public MainWindow()
         {
             InitializeComponent();
             //This is a factory that generates remote connections to our remote class. This is what hides the RPC stuff!
-            ChannelFactory<BankServerInterface> bankFactory;
+            ChannelFactory<BusinessServerInterface> bankFactory;
             NetTcpBinding tcp = new NetTcpBinding();
 
             //Set the URL and create the connection!
-            string URL = "net.tcp://localhost:8100/BankService";
+            string URL = "net.tcp://localhost:8200/BankBusinessService";
             EndpointAddress address = new EndpointAddress(URL);
-            bankFactory = new ChannelFactory<BankServerInterface>(tcp, address);
+            bankFactory = new ChannelFactory<BusinessServerInterface>(tcp, address);
             bank = bankFactory.CreateChannel();
             //Also, tell me how many entries are there in the DB
             TotalRecs.Text = bank.GetNumEntries().ToString();
@@ -75,7 +76,9 @@ namespace BankClient
                 }
             } catch (FaultException<ServerFailureException> ex){
                 Request_Counter.Text = ex.Detail.Operation;
-            } 
+            } catch (FormatException)
+            {
+            }
 
         }
 
