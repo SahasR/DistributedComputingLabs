@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using DatabaseLib;
 using System.Drawing;
 using System.IO;
+using System.Threading;
 
 namespace BankServer
 {
@@ -43,8 +44,8 @@ namespace BankServer
                 sf.ProblemType = "Out of index values";
                 throw new FaultException<ServerFailureException>(sf);
             }
-            
-            
+
+            Thread.Sleep(1000);
         }
 
     }

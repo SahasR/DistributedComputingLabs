@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ResultStruct.cs" />
     <Compile Include="DatabaseClass.cs" />
     <Compile Include="DataStruct.cs" />
     <Compile Include="DatabaseGenerator.cs" />

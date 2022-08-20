@@ -1,33 +1,32 @@
 ﻿using System;
-using System.Drawing;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace DatabaseLib
 {
-    //The instructions to generate this code is given in the assignment specification
-    public class DataStruct
+    public class ResultStruct
     {
         public uint acctNo;
         public uint pin;
         public int balance;
         public string firstName;
         public string lastName;
-        public string image;
+        public Bitmap image;
 
-        public DataStruct()
+        public ResultStruct()
         {
             acctNo = 0;
             pin = 0;
             balance = 0;
             firstName = "";
             lastName = "";
-            image = "";
+            image = null;
         }
 
-        public DataStruct(uint acctNo, uint pin, int balance, string firstName, string lastName, string image)
+        public ResultStruct(uint acctNo, uint pin, int balance, string firstName, string lastName, Bitmap image)
         {
             this.acctNo = acctNo;
             this.pin = pin;

@@ -1,32 +1,26 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.ServiceModel;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Drawing;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using System.Runtime.Remoting.Messaging;
 using BankServer;
 using System.Windows.Interop;
 using System.IO;
 using BankBusinessTier;
+using DatabaseLib;
 
 namespace BankClient
 {
+    public delegate ResultStruct Search(string value);
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
         private BusinessServerInterface bank;
+        private Search search;
         public MainWindow()
         {
             InitializeComponent();
@@ -91,7 +85,14 @@ namespace BankClient
 
         private void SearchButton_Click(object sender, RoutedEventArgs e)
         {
-            string searchText;
+            search = SearchDB;
+            AsyncCallback callback;
+            callback = this.OnSearchCompletion;
+            IAsyncResult result = search.BeginInvoke(Search.Text, callback, null);
+        }
+
+        private ResultStruct SearchDB(string searchText)
+        {
             string fName = null, lName = null;
             byte[] bitmapBytes;
             int bal = 0;
@@ -104,19 +105,21 @@ namespace BankClient
             {
                 //On click, Get the index...
                 searchText = Search.Text;
-                
-                    bank.GetValuesForSearch(searchText, out acct, out pin, out bal, out fName, out lName, out bitmapBytes);
-                    FNameBox.Text = fName;
-                    LNameBox.Text = lName;
-                    Balance.Text = bal.ToString("C");
-                    AcctNo.Text = acct.ToString();
-                    Pin.Text = pin.ToString("D4");
+
+                bank.GetValuesForSearch(searchText, out acct, out pin, out bal, out fName, out lName, out bitmapBytes);
+                if (fName != null)
+                {
+                    ResultStruct returnValue = new ResultStruct();
+                    returnValue.acctNo = acct;
+                    returnValue.pin = pin;
+                    returnValue.balance = bal;
+                    returnValue.firstName = fName;
+                    returnValue.lastName = lName;
                     MemoryStream ms = new MemoryStream(bitmapBytes);
                     Bitmap image = (Bitmap)Bitmap.FromStream(ms);
-                    PictureBox.Source = converter(image);
-                    //Picture Boxes only use ImageSource format so I have a function that creates a ImageSource from BitMap
-                    Request_Counter.Text = count.ToString();
-                    //Just to see how many requests you have made
+                    returnValue.image = image;
+                    return returnValue;
+                }
             }
             catch (FaultException<ServerFailureException> ex)
             {
@@ -125,6 +128,37 @@ namespace BankClient
             catch (FormatException)
             {
             }
+            return null;
+        }
+
+        private void OnSearchCompletion(IAsyncResult asyncResult)
+        {
+            ResultStruct resultStruct = null;
+            Search search = null;
+            AsyncResult aysncobj = (AsyncResult) asyncResult;
+            if (asyncobj.EndInvokeCalled == false)
+            {
+                search = (Search)asyncobj.AsyncDelegate;
+                resultStruct = search.EndInvoke(asyncobj);
+                UpdateGUI(resultStruct);
+            }
+
+            asyncobj.AsyncWaitHandle.Close();
+        }
+
+        private void UpdateGUI(ResultStruct resultStruct)
+        {
+            //Placeholder
+            FNameBox.Text = resultStruct.firstName;
+            LNameBox.Text = resultStruct.lastName;
+            Balance.Text = resultStruct.balance.ToString("C");
+            AcctNo.Text = resultStruct.acctNo.ToString();
+            Pin.Text = resultStruct.pin.ToString("D4");
+
+            PictureBox.Source = converter(resultStruct.image);
+            //Picture Boxes only use ImageSource format so I have a function that creates a ImageSource from BitMap
+            Request_Counter.Text = (int.Parse(Request_Counter.Text) + 1).ToString();
+            //Just to see how many requests you have made
         }
     }
 }
