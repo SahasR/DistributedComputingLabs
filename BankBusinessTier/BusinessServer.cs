@@ -58,17 +58,20 @@ namespace BankBusinessTier
                 string lastName;
                 byte[] tempImage;
 
-                foob.GetValuesForEntry(i, out accountNumber, out pinNumber, out currentBalance, out firstName, out lastName, out tempImage);
-                if (lastName.ToLower().Contains(searchText.ToLower()))
+                try
                 {
-                    acctNo = accountNumber;
-                    pin = pinNumber;
-                    bal = currentBalance;
-                    fName = firstName;
-                    lName = lastName;
-                    bitmapBytes = tempImage;
-                    break;
-                }
+                    foob.GetValuesForEntry(i, out accountNumber, out pinNumber, out currentBalance, out firstName, out lastName, out tempImage);
+                    if (lastName.ToLower().Contains(searchText.ToLower()))
+                    {
+                        acctNo = accountNumber;
+                        pin = pinNumber;
+                        bal = currentBalance;
+                        fName = firstName;
+                        lName = lastName;
+                        bitmapBytes = tempImage;
+                        break;
+                    }
+                } catch (FaultException<ServerFailureException> ex) { }
             }
         }
     }
