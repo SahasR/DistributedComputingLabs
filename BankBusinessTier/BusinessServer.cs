@@ -38,5 +38,38 @@ namespace BankBusinessTier
                 throw ex;
             }
         }
+
+        public void GetValuesForSearch(string searchText, out uint acctNo, out uint pin, out int bal, out string fName, out string lName, out byte[] bitmapBytes)
+        {
+            acctNo = 0;
+            pin = 0;
+            bal = 0;
+            fName = null;
+            lName = null;
+            bitmapBytes = null;
+
+            int numEntries = foob.GetNumEntries();
+            for (int i = 0;  i < numEntries; i++)
+            {
+                uint accountNumber;
+                uint pinNumber;
+                int currentBalance;
+                string firstName;
+                string lastName;
+                byte[] tempImage;
+
+                foob.GetValuesForEntry(i, out accountNumber, out pinNumber, out currentBalance, out firstName, out lastName, out tempImage);
+                if (lastName.ToLower().Contains(searchText.ToLower()))
+                {
+                    acctNo = accountNumber;
+                    pin = pinNumber;
+                    bal = currentBalance;
+                    fName = firstName;
+                    lName = lastName;
+                    bitmapBytes = tempImage;
+                    break;
+                }
+            }
+        }
     }
 }
