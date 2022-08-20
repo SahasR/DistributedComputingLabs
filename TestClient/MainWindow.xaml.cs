@@ -97,15 +97,12 @@ namespace BankClient
             byte[] bitmapBytes;
             int bal = 0;
             uint acct = 0, pin = 0;
-            int count = Int32.Parse(Request_Counter.Text);
-            count++;
-
 
             try
             {
                 //On click, Get the index...
-                searchText = Search.Text;
-
+                Search.Dispatcher.Invoke(new Action(() => searchText = Search.Text));
+                
                 bank.GetValuesForSearch(searchText, out acct, out pin, out bal, out fName, out lName, out bitmapBytes);
                 if (fName != null)
                 {
@@ -148,16 +145,14 @@ namespace BankClient
 
         private void UpdateGUI(ResultStruct resultStruct)
         {
-            //Placeholder
-            FNameBox.Text = resultStruct.firstName;
-            LNameBox.Text = resultStruct.lastName;
-            Balance.Text = resultStruct.balance.ToString("C");
-            AcctNo.Text = resultStruct.acctNo.ToString();
-            Pin.Text = resultStruct.pin.ToString("D4");
-
-            PictureBox.Source = converter(resultStruct.image);
+            FNameBox.Dispatcher.BeginInvoke(new Action(() => FNameBox.Text = resultStruct.firstName));
+            LNameBox.Dispatcher.BeginInvoke(new Action(() => LNameBox.Text = resultStruct.lastName));
+            Balance.Dispatcher.BeginInvoke(new Action(() => Balance.Text = resultStruct.balance.ToString("C")));
+            AcctNo.Dispatcher.BeginInvoke(new Action(() => AcctNo.Text = resultStruct.acctNo.ToString()));
+            Pin.Dispatcher.BeginInvoke(new Action(() => Pin.Text = resultStruct.pin.ToString("D4")));
+            PictureBox.Dispatcher.BeginInvoke(new Action(() => PictureBox.Source = converter(resultStruct.image)));
             //Picture Boxes only use ImageSource format so I have a function that creates a ImageSource from BitMap
-            Request_Counter.Text = (int.Parse(Request_Counter.Text) + 1).ToString();
+            Request_Counter.Dispatcher.BeginInvoke(new Action(() => Request_Counter.Text = (int.Parse(Request_Counter.Text) + 1).ToString()));
             //Just to see how many requests you have made
         }
     }
