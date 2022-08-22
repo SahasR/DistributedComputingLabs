@@ -90,8 +90,10 @@ namespace AsyncClient
         {
             Task<ResultStruct> task = new Task<ResultStruct>(SearchDB);
             task.Start();
+            statusLabel.Content = "Loading result";
             ResultStruct result = await task;
             UpdateGUI(result);
+            statusLabel.Content = "Loaded!";
         }
 
         private ResultStruct SearchDB()
