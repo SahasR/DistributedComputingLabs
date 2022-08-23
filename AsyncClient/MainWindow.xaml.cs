@@ -90,10 +90,23 @@ namespace AsyncClient
         {
             Task<ResultStruct> task = new Task<ResultStruct>(SearchDB);
             task.Start();
+            disableUI();
             statusLabel.Content = "Loading result";
             ResultStruct result = await task;
             UpdateGUI(result);
             statusLabel.Content = "Loaded!";
+        }
+
+        private void disableUI()
+        {
+            ProgressBar.Dispatcher.BeginInvoke(new Action(() => ProgressBar.IsIndeterminate = true));
+            FNameBox.Dispatcher.BeginInvoke(new Action(() => FNameBox.IsReadOnly = true));
+            LNameBox.Dispatcher.BeginInvoke(new Action(() => LNameBox.IsReadOnly = true));
+            Balance.Dispatcher.BeginInvoke(new Action(() => Balance.IsReadOnly = true));
+            AcctNo.Dispatcher.BeginInvoke(new Action(() => AcctNo.IsReadOnly = true));
+            Pin.Dispatcher.BeginInvoke(new Action(() => Pin.IsReadOnly = true));
+            Go.Dispatcher.BeginInvoke(new Action(() => Go.IsEnabled = false));
+            SearchButton.Dispatcher.BeginInvoke(new Action(() => SearchButton.IsEnabled = false));
         }
 
         private ResultStruct SearchDB()
@@ -144,6 +157,15 @@ namespace AsyncClient
             //Picture Boxes only use ImageSource format so I have a function that creates a ImageSource from BitMap
             Request_Counter.Dispatcher.BeginInvoke(new Action(() => Request_Counter.Text = (int.Parse(Request_Counter.Text) + 1).ToString()));
             //Just to see how many requests you have made
+            FNameBox.Dispatcher.BeginInvoke(new Action(() => FNameBox.IsReadOnly = false));
+            LNameBox.Dispatcher.BeginInvoke(new Action(() => LNameBox.IsReadOnly = false));
+            Balance.Dispatcher.BeginInvoke(new Action(() => Balance.IsReadOnly = false));
+            AcctNo.Dispatcher.BeginInvoke(new Action(() => AcctNo.IsReadOnly = false));
+            Pin.Dispatcher.BeginInvoke(new Action(() => Pin.IsReadOnly = false));
+            Go.Dispatcher.BeginInvoke(new Action(() => Go.IsEnabled = true));
+            SearchButton.Dispatcher.BeginInvoke(new Action(() => SearchButton.IsEnabled = true));
+            ProgressBar.Dispatcher.BeginInvoke(new Action(() => ProgressBar.IsIndeterminate = false));
+            ProgressBar.Dispatcher.BeginInvoke(new Action(() => ProgressBar.Value = 100));
         }
     }
 }

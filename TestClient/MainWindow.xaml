@@ -75,6 +75,7 @@
         <Image x:Name="PictureBox" HorizontalAlignment="Left" Height="100" Margin="116,69,0,0" VerticalAlignment="Top" Width="100"/>
         <TextBox x:Name="Search" HorizontalAlignment="Left" Margin="116,323,0,0" TextWrapping="Wrap" Text="Search" VerticalAlignment="Top" Width="139" Height="24"/>
         <Button x:Name="SearchButton" Content="Search!" HorizontalAlignment="Left" Margin="274,319,0,0" VerticalAlignment="Top" Height="32" Width="49" Click="SearchButton_Click"/>
+        <ProgressBar x:Name="ProgressBar" HorizontalAlignment="Left" Height="10" Margin="136,297,0,0" VerticalAlignment="Top" Width="100"/>
 
     </Grid>
 </Window>
