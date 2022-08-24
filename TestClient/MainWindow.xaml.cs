@@ -28,6 +28,13 @@ namespace BankClient
             ChannelFactory<BusinessServerInterface> bankFactory;
             NetTcpBinding tcp = new NetTcpBinding();
 
+            tcp.OpenTimeout = new TimeSpan(0, 10, 0);
+            tcp.CloseTimeout = new TimeSpan(0, 10, 0);
+            tcp.SendTimeout = new TimeSpan(0, 10, 0);
+            tcp.ReceiveTimeout = new TimeSpan(0, 10, 0);
+
+            //Have to increase the timeouts as it timeouts before the server has gone through all hundred records
+
             //Set the URL and create the connection!
             string URL = "net.tcp://localhost:8200/BankBusinessService";
             EndpointAddress address = new EndpointAddress(URL);
@@ -137,6 +144,11 @@ namespace BankClient
             catch (FormatException)
             {
             }
+            catch (TimeoutException)
+            {
+                Search.Dispatcher.Invoke(new Action(() => Search.Text = "Timeout!"));
+                
+            }
             return null;
         }
 
@@ -157,14 +169,17 @@ namespace BankClient
 
         private void UpdateGUI(ResultStruct resultStruct)
         {
-            FNameBox.Dispatcher.BeginInvoke(new Action(() => FNameBox.Text = resultStruct.firstName));
-            LNameBox.Dispatcher.BeginInvoke(new Action(() => LNameBox.Text = resultStruct.lastName));
-            Balance.Dispatcher.BeginInvoke(new Action(() => Balance.Text = resultStruct.balance.ToString("C")));
-            AcctNo.Dispatcher.BeginInvoke(new Action(() => AcctNo.Text = resultStruct.acctNo.ToString()));
-            Pin.Dispatcher.BeginInvoke(new Action(() => Pin.Text = resultStruct.pin.ToString("D4")));
-            PictureBox.Dispatcher.BeginInvoke(new Action(() => PictureBox.Source = converter(resultStruct.image)));
-            //Picture Boxes only use ImageSource format so I have a function that creates a ImageSource from BitMap
-            Request_Counter.Dispatcher.BeginInvoke(new Action(() => Request_Counter.Text = (int.Parse(Request_Counter.Text) + 1).ToString()));
+            if (resultStruct != null)
+            {
+                FNameBox.Dispatcher.BeginInvoke(new Action(() => FNameBox.Text = resultStruct.firstName));
+                LNameBox.Dispatcher.BeginInvoke(new Action(() => LNameBox.Text = resultStruct.lastName));
+                Balance.Dispatcher.BeginInvoke(new Action(() => Balance.Text = resultStruct.balance.ToString("C")));
+                AcctNo.Dispatcher.BeginInvoke(new Action(() => AcctNo.Text = resultStruct.acctNo.ToString()));
+                Pin.Dispatcher.BeginInvoke(new Action(() => Pin.Text = resultStruct.pin.ToString("D4")));
+                PictureBox.Dispatcher.BeginInvoke(new Action(() => PictureBox.Source = converter(resultStruct.image)));
+                //Picture Boxes only use ImageSource format so I have a function that creates a ImageSource from BitMap
+                Request_Counter.Dispatcher.BeginInvoke(new Action(() => Request_Counter.Text = (int.Parse(Request_Counter.Text) + 1).ToString()));
+            }
             FNameBox.Dispatcher.BeginInvoke(new Action(() => FNameBox.IsReadOnly = false));
             LNameBox.Dispatcher.BeginInvoke(new Action(() => LNameBox.IsReadOnly = false));
             Balance.Dispatcher.BeginInvoke(new Action(() => Balance.IsReadOnly = false));

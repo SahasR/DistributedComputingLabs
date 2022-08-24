@@ -44,8 +44,6 @@ namespace BankServer
                 sf.ProblemType = "Out of index values";
                 throw new FaultException<ServerFailureException>(sf);
             }
-
-            Thread.Sleep(1000);
         }
 
     }

@@ -15,6 +15,7 @@ namespace BankBusinessTier
     {
         private BankServerInterface foob;
         private uint LogNumber;
+        private string client;
         public BusinessServer()
         {
             ChannelFactory<BankServerInterface> foobFactory;
@@ -25,6 +26,7 @@ namespace BankBusinessTier
             foob = foobFactory.CreateChannel();
             LogNumber = 0;
             Log("New Client Conencted!");
+
         }
         public int GetNumEntries()
         {
@@ -55,15 +57,17 @@ namespace BankBusinessTier
             lName = null;
             bitmapBytes = null;
 
+            uint accountNumber;
+            uint pinNumber;
+            int currentBalance;
+            string firstName;
+            string lastName;
+            byte[] tempImage;
+
             int numEntries = foob.GetNumEntries();
             for (int i = 0;  i < numEntries; i++)
             {
-                uint accountNumber;
-                uint pinNumber;
-                int currentBalance;
-                string firstName;
-                string lastName;
-                byte[] tempImage;
+                
 
                 try
                 {
@@ -77,8 +81,10 @@ namespace BankBusinessTier
                         lName = lastName;
                         bitmapBytes = tempImage;
                         Log("Found the matching search value! " + fName + " : " + lName);
+                        
                         break;
                     }
+                    Console.WriteLine(i);
                 } catch (FaultException<ServerFailureException> ex) { }
             }
         }

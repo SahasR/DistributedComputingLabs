@@ -23,13 +23,19 @@ namespace AsyncClient
         private BusinessServerInterface bank;
         private Search search;
         private string searchText;
+        private ChannelFactory<BusinessServerInterface> bankFactory;
 
         public MainWindow()
         {
             InitializeComponent();
             //This is a factory that generates remote connections to our remote class. This is what hides the RPC stuff!
-            ChannelFactory<BusinessServerInterface> bankFactory;
             NetTcpBinding tcp = new NetTcpBinding();
+            tcp.OpenTimeout = new TimeSpan(0, 3, 0);
+            tcp.CloseTimeout = new TimeSpan(0, 3, 0);
+            tcp.SendTimeout = new TimeSpan(0, 3, 0);
+            tcp.ReceiveTimeout = new TimeSpan(0, 3, 0);
+
+            //Have to increase the timeouts as it timeouts before the server has gone through all hundred records
 
             //Set the URL and create the connection!
             string URL = "net.tcp://localhost:8200/BankBusinessService";
@@ -38,7 +44,6 @@ namespace AsyncClient
             bank = bankFactory.CreateChannel();
             //Also, tell me how many entries are there in the DB
             TotalRecs.Text = bank.GetNumEntries().ToString();
-
         }
 
         private void Go_Click(object sender, RoutedEventArgs e)
@@ -134,7 +139,7 @@ namespace AsyncClient
                     Bitmap image = (Bitmap)Bitmap.FromStream(ms);
                     returnValue.image = image;
                     return returnValue;
-                }
+                } 
             }
             catch (FaultException<ServerFailureException> ex)
             {
@@ -143,19 +148,32 @@ namespace AsyncClient
             catch (FormatException)
             {
             }
+            catch (TimeoutException e)
+            {
+                Search.Dispatcher.Invoke(new Action(() => Search.Text = "Timeout!"));
+                bankFactory.Abort();
+            }
             return null;
         }
 
         private void UpdateGUI(ResultStruct resultStruct)
         {
-            FNameBox.Dispatcher.BeginInvoke(new Action(() => FNameBox.Text = resultStruct.firstName));
-            LNameBox.Dispatcher.BeginInvoke(new Action(() => LNameBox.Text = resultStruct.lastName));
-            Balance.Dispatcher.BeginInvoke(new Action(() => Balance.Text = resultStruct.balance.ToString("C")));
-            AcctNo.Dispatcher.BeginInvoke(new Action(() => AcctNo.Text = resultStruct.acctNo.ToString()));
-            Pin.Dispatcher.BeginInvoke(new Action(() => Pin.Text = resultStruct.pin.ToString("D4")));
-            PictureBox.Dispatcher.BeginInvoke(new Action(() => PictureBox.Source = converter(resultStruct.image)));
-            //Picture Boxes only use ImageSource format so I have a function that creates a ImageSource from BitMap
-            Request_Counter.Dispatcher.BeginInvoke(new Action(() => Request_Counter.Text = (int.Parse(Request_Counter.Text) + 1).ToString()));
+            if (resultStruct != null)
+            {
+                FNameBox.Dispatcher.BeginInvoke(new Action(() => FNameBox.Text = resultStruct.firstName));
+                LNameBox.Dispatcher.BeginInvoke(new Action(() => LNameBox.Text = resultStruct.lastName));
+                Balance.Dispatcher.BeginInvoke(new Action(() => Balance.Text = resultStruct.balance.ToString("C")));
+                AcctNo.Dispatcher.BeginInvoke(new Action(() => AcctNo.Text = resultStruct.acctNo.ToString()));
+                Pin.Dispatcher.BeginInvoke(new Action(() => Pin.Text = resultStruct.pin.ToString("D4")));
+                PictureBox.Dispatcher.BeginInvoke(new Action(() => PictureBox.Source = converter(resultStruct.image)));
+                Request_Counter.Dispatcher.BeginInvoke(new Action(() => Request_Counter.Text = (int.Parse(Request_Counter.Text) + 1).ToString()));
+            }
+            else
+            {
+                Search.Dispatcher.Invoke(new Action(() => Search.Text = "Not Found!"));
+            }
+            
+            //Picture Boxes only use ImageSource format so I have a function that creates a ImageSource from BitMap   
             //Just to see how many requests you have made
             FNameBox.Dispatcher.BeginInvoke(new Action(() => FNameBox.IsReadOnly = false));
             LNameBox.Dispatcher.BeginInvoke(new Action(() => LNameBox.IsReadOnly = false));
