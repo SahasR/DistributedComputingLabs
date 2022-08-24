@@ -16,6 +16,8 @@ namespace BankBusinessTier
         private BankServerInterface foob;
         private uint LogNumber;
         private string client;
+        private static Random random = new Random();
+        private string ClientID;
         public BusinessServer()
         {
             ChannelFactory<BankServerInterface> foobFactory;
@@ -25,8 +27,18 @@ namespace BankBusinessTier
             foobFactory = new ChannelFactory<BankServerInterface>(tcp, URL);
             foob = foobFactory.CreateChannel();
             LogNumber = 0;
+            ClientID = RandomString(6);
             Log("New Client Conencted!");
 
+
+        }
+
+        //Code has been taken from StackOverflow to generate a clientID
+        public static string RandomString(int length)
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            return new string(Enumerable.Repeat(chars, length)
+                .Select(s => s[random.Next(s.Length)]).ToArray());
         }
         public int GetNumEntries()
         {
@@ -84,7 +96,6 @@ namespace BankBusinessTier
                         
                         break;
                     }
-                    Console.WriteLine(i);
                 } catch (FaultException<ServerFailureException> ex) { }
             }
         }
@@ -93,7 +104,7 @@ namespace BankBusinessTier
         private void Log(string logString)
         {
             LogNumber++;
-            Console.WriteLine(LogNumber + " : " + logString + " @ " + DateTime.Now.ToShortTimeString());
+            Console.WriteLine(LogNumber + " : " + logString + " @ " + DateTime.Now.ToShortTimeString() + " for Client " + ClientID);
         }
     }
 }

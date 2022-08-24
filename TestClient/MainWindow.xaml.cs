@@ -28,10 +28,10 @@ namespace BankClient
             ChannelFactory<BusinessServerInterface> bankFactory;
             NetTcpBinding tcp = new NetTcpBinding();
 
-            tcp.OpenTimeout = new TimeSpan(0, 10, 0);
-            tcp.CloseTimeout = new TimeSpan(0, 10, 0);
-            tcp.SendTimeout = new TimeSpan(0, 10, 0);
-            tcp.ReceiveTimeout = new TimeSpan(0, 10, 0);
+            tcp.OpenTimeout = new TimeSpan(0, 5, 0);
+            tcp.CloseTimeout = new TimeSpan(0, 5, 0);
+            tcp.SendTimeout = new TimeSpan(0, 5, 0);
+            tcp.ReceiveTimeout = new TimeSpan(0, 5, 0);
 
             //Have to increase the timeouts as it timeouts before the server has gone through all hundred records
 
@@ -146,8 +146,7 @@ namespace BankClient
             }
             catch (TimeoutException)
             {
-                Search.Dispatcher.Invoke(new Action(() => Search.Text = "Timeout!"));
-                
+                Search.Dispatcher.Invoke(new Action(() => Search.Text = "Timeout!"));   
             }
             return null;
         }

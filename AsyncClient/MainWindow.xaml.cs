@@ -30,10 +30,10 @@ namespace AsyncClient
             InitializeComponent();
             //This is a factory that generates remote connections to our remote class. This is what hides the RPC stuff!
             NetTcpBinding tcp = new NetTcpBinding();
-            tcp.OpenTimeout = new TimeSpan(0, 3, 0);
-            tcp.CloseTimeout = new TimeSpan(0, 3, 0);
-            tcp.SendTimeout = new TimeSpan(0, 3, 0);
-            tcp.ReceiveTimeout = new TimeSpan(0, 3, 0);
+            tcp.OpenTimeout = new TimeSpan(0, 5, 0);
+            tcp.CloseTimeout = new TimeSpan(0, 5, 0);
+            tcp.SendTimeout = new TimeSpan(0, 5, 0);
+            tcp.ReceiveTimeout = new TimeSpan(0, 5, 0);
 
             //Have to increase the timeouts as it timeouts before the server has gone through all hundred records
 
