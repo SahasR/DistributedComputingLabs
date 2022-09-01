@@ -11,6 +11,9 @@ using System.IO;
 using BankBusinessTier;
 using DatabaseLib;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using RestSharp;
+using APIClasses;
 
 namespace AsyncClient
 {
@@ -20,54 +23,43 @@ namespace AsyncClient
     /// </summary>
     public partial class MainWindow : Window
     {
-        private BusinessServerInterface bank;
+        RestClient client;
         private Search search;
         private string searchText;
-        private ChannelFactory<BusinessServerInterface> bankFactory;
 
         public MainWindow()
         {
             InitializeComponent();
-            //This is a factory that generates remote connections to our remote class. This is what hides the RPC stuff!
-            NetTcpBinding tcp = new NetTcpBinding();
-            tcp.OpenTimeout = new TimeSpan(0, 5, 0);
-            tcp.CloseTimeout = new TimeSpan(0, 5, 0);
-            tcp.SendTimeout = new TimeSpan(0, 5, 0);
-            tcp.ReceiveTimeout = new TimeSpan(0, 5, 0);
+            string URL = "http://localhost:51641/";
+            client = new RestClient(URL);
+            RestRequest request = new RestRequest("api/values");
+            RestResponse numEntries = client.Get(request);
 
-            //Have to increase the timeouts as it timeouts before the server has gone through all hundred records
-
-            //Set the URL and create the connection!
-            string URL = "net.tcp://localhost:8200/BankBusinessService";
-            EndpointAddress address = new EndpointAddress(URL);
-            bankFactory = new ChannelFactory<BusinessServerInterface>(tcp, address);
-            bank = bankFactory.CreateChannel();
             //Also, tell me how many entries are there in the DB
-            TotalRecs.Text = bank.GetNumEntries().ToString();
+            TotalRecs.Text = numEntries.Content.ToString();
         }
 
         private void Go_Click(object sender, RoutedEventArgs e)
         {
-            int index = 0;
-            string fName = null, lName = null;
-            byte[] bitmapBytes;
-            int bal = 0;
-            uint acct = 0, pin = 0;
+        
             int count = Int32.Parse(Request_Counter.Text);
             count++;
 
             try
             {
                 //On click, Get the index...
-                index = Int32.Parse(Index.Text);
+                int index = Int32.Parse(Index.Text);
                 if (index > 0 && index <= Int32.Parse(TotalRecs.Text))
                 {
-                    bank.GetValuesForEntry(index - 1, out acct, out pin, out bal, out fName, out lName, out bitmapBytes);
-                    FNameBox.Text = fName;
-                    LNameBox.Text = lName;
-                    Balance.Text = bal.ToString("C");
-                    AcctNo.Text = acct.ToString();
-                    Pin.Text = pin.ToString("D4");
+                    RestRequest request = new RestRequest("api/values/" + index.ToString());
+                    RestResponse response = client.Get(request);
+                    DataIntermed dataIntermed = JsonConvert.DeserializeObject<DataIntermed>(response.Content);
+                    FNameBox.Text = dataIntermed.fname;
+                    LNameBox.Text = dataIntermed.lname;
+                    Balance.Text = dataIntermed.bal.ToString("C");
+                    AcctNo.Text = dataIntermed.acct.ToString();
+                    Pin.Text = dataIntermed.pin.ToString("D4");
+                    byte[] bitmapBytes = dataIntermed.image;
                     MemoryStream ms = new MemoryStream(bitmapBytes);
                     Bitmap image = (Bitmap)Bitmap.FromStream(ms);
                     PictureBox.Source = converter(image);
@@ -126,7 +118,7 @@ namespace AsyncClient
                 //On click, Get the search value...
                 Search.Dispatcher.Invoke(new Action(() => searchText = Search.Text));
 
-                bank.GetValuesForSearch(searchText, out acct, out pin, out bal, out fName, out lName, out bitmapBytes);
+               // bank.GetValuesForSearch(searchText, out acct, out pin, out bal, out fName, out lName, out bitmapBytes);
                 if (fName != null)
                 {
                     ResultStruct returnValue = new ResultStruct();
@@ -135,9 +127,9 @@ namespace AsyncClient
                     returnValue.balance = bal;
                     returnValue.firstName = fName;
                     returnValue.lastName = lName;
-                    MemoryStream ms = new MemoryStream(bitmapBytes);
-                    Bitmap image = (Bitmap)Bitmap.FromStream(ms);
-                    returnValue.image = image;
+                  //  MemoryStream ms = new MemoryStream(bitmapBytes);
+                  //  Bitmap image = (Bitmap)Bitmap.FromStream(ms);
+                   // returnValue.image = image;
                     return returnValue;
                 } 
             }
@@ -151,7 +143,7 @@ namespace AsyncClient
             catch (TimeoutException e)
             {
                 Search.Dispatcher.Invoke(new Action(() => Search.Text = "Timeout!"));
-                bankFactory.Abort();
+            //    bankFactory.Abort();
             }
             return null;
         }

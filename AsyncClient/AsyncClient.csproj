@@ -131,6 +131,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\APIClasses\APIClasses.csproj">
+      <Project>{B1BFA712-024C-46EB-B544-CA3B2FEE2325}</Project>
+      <Name>APIClasses</Name>
+    </ProjectReference>
     <ProjectReference Include="..\BankBusinessTier\BankBusinessTier.csproj">
       <Project>{9af0ca9f-6ba3-4989-9a45-c930a10ce362}</Project>
       <Name>BankBusinessTier</Name>
