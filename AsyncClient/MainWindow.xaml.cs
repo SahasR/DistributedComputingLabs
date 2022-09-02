@@ -24,7 +24,6 @@ namespace AsyncClient
     public partial class MainWindow : Window
     {
         RestClient client;
-        private Search search;
         private string searchText;
 
         public MainWindow()
@@ -83,35 +82,47 @@ namespace AsyncClient
             return Imaging.CreateBitmapSourceFromHBitmap(handle, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
         }
 
-        private void SearchButton_Click(object sender, RoutedEventArgs e)
+        private async void SearchButton_Click(object sender, RoutedEventArgs e)
         {
-            SearchData mySearch = new SearchData(Search.Text);
-            RestRequest request = new RestRequest("api/search");
-            request.AddJsonBody(JsonConvert.SerializeObject(mySearch));
-            RestResponse resp = client.Post(request);
-            DataIntermed dataIntermed = JsonConvert.DeserializeObject<DataIntermed>(resp.Content);
-            statusLabel.Content = "Loaded!";
+            searchText = Search.Text;
+            Task<DataIntermed> task = new Task<DataIntermed>(fetchResults);
+            task.Start();
+            statusLabel.Content = "Loading Results!";
+            DataIntermed dataIntermed = await task;
+            statusLabel.Content = "Loaded";
+            UpdateGUI(dataIntermed);
+        }
+
+        private void UpdateGUI(DataIntermed dataIntermed)
+        {
             if (dataIntermed != null)
             {
-                FNameBox.Text = dataIntermed.fname;
-                LNameBox.Text = dataIntermed.lname;
-                Balance.Text = dataIntermed.bal.ToString("C");
-                FNameBox.Text = dataIntermed.fname;
-                LNameBox.Text = dataIntermed.lname;
-                Balance.Text = dataIntermed.bal.ToString("C");
-                AcctNo.Text = dataIntermed.acct.ToString();
-                Pin.Text = dataIntermed.pin.ToString("D4");
+                FNameBox.Dispatcher.BeginInvoke(new Action(() => FNameBox.Text = dataIntermed.fname));
+                LNameBox.Dispatcher.BeginInvoke(new Action(() => LNameBox.Text = dataIntermed.lname));
+                Balance.Dispatcher.BeginInvoke(new Action(() => Balance.Text = dataIntermed.bal.ToString("C")));
+                AcctNo.Dispatcher.BeginInvoke(new Action(() => AcctNo.Text = dataIntermed.acct.ToString()));
+                Pin.Dispatcher.BeginInvoke(new Action(() => Pin.Text = dataIntermed.pin.ToString("D4")));
                 byte[] bitmapBytes = dataIntermed.image;
                 MemoryStream ms = new MemoryStream(bitmapBytes);
                 Bitmap image = (Bitmap)Bitmap.FromStream(ms);
-                PictureBox.Source = converter(image);
-            } else
-            {
-                Search.Text = "Not Found";
+
+                PictureBox.Dispatcher.BeginInvoke(new Action(() => PictureBox.Source = converter(image)));
             }
-            
+            else
+            {
+                Search.Dispatcher.BeginInvoke(new Action(() => Search.Text = "Not Found"));
+            }
         }
 
+        private DataIntermed fetchResults()
+        {
+            SearchData search = new SearchData(searchText);
+            RestRequest request = new RestRequest("api/search");
+            request.AddJsonBody(JsonConvert.SerializeObject(search));
+            RestResponse resp = client.Post(request);
+            DataIntermed dataIntermed = JsonConvert.DeserializeObject<DataIntermed>(resp.Content);
+            return dataIntermed;
+        }
        
     }
 }
