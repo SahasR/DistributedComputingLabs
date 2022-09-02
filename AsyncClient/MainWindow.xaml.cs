@@ -30,19 +30,27 @@ namespace AsyncClient
         public MainWindow()
         {
             InitializeComponent();
-            //baseURL = "http://localhost:51641/";
-            client = new RestClient(baseURL);
-            RestRequest request = new RestRequest("api/values");
-            RestResponse numEntries = client.Get(request);
-
-            //Also, tell me how many entries are there in the DB
-            TotalRecs.Text = numEntries.Content.ToString();
+            Go.IsEnabled = false;
+            SearchButton.IsEnabled = false;
         }
 
         private void setBaseURL(string baseURL)
         {
             this.baseURL = baseURL;
+            connect();
         }
+
+        private void connect()
+        {
+            client = new RestClient(baseURL);
+            RestRequest request = new RestRequest("api/values");
+            RestResponse numEntries = client.Get(request);
+            //Also, tell me how many entries are there in the DB
+            TotalRecs.Text = numEntries.Content.ToString();
+            Go.IsEnabled = true;
+            SearchButton.IsEnabled = true;
+        }
+
 
         private void Go_Click(object sender, RoutedEventArgs e)
         {
