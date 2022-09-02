@@ -10,10 +10,10 @@ using System.Web.Http;
 
 namespace BusinessTierAPI.Controllers
 {
-    [RoutePrefix("api/values")]
+    [RoutePrefix("api/search")]
     public class SearchController : ApiController
     {
-        public BankServerInterface connect()
+        private BankServerInterface connect()
         {
             ChannelFactory<BankServerInterface> foobFactory;
             NetTcpBinding tcp = new NetTcpBinding();
@@ -22,7 +22,10 @@ namespace BusinessTierAPI.Controllers
             BankServerInterface foob = foobFactory.CreateChannel();
             return foob;
         }
-        public IHttpActionResult Post([FromBody] string value)
+
+
+        [HttpPost]
+        public IHttpActionResult Post([FromBody]SearchData data)
         {
             BankServerInterface foob = connect();
             uint accountNumber;
@@ -35,12 +38,10 @@ namespace BusinessTierAPI.Controllers
             int numEntries = foob.GetNumEntries();
             for (int i = 0; i < numEntries; i++)
             {
-
-
                 try
                 {
                     foob.GetValuesForEntry(i, out accountNumber, out pinNumber, out currentBalance, out firstName, out lastName, out tempImage);
-                    if (lastName.ToLower().Contains(value))
+                    if (lastName.ToLower().Contains(data.searchStr))
                     {
                         DataIntermed dataIntermed = new DataIntermed(currentBalance, accountNumber, pinNumber, firstName, lastName, tempImage);
                         return Ok(dataIntermed);

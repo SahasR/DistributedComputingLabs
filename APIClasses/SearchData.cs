@@ -9,5 +9,10 @@ namespace APIClasses
     public class SearchData
     {
         public string searchStr;
+
+        public SearchData(string searchStr)
+        {
+            this.searchStr = searchStr;
+        }
     }
 }

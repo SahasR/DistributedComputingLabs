@@ -23,7 +23,7 @@ namespace DatabaseLib
             //Will be storing image as a location url, if you store as bitmap your application will be very heavy to load 100s of BitMaps in one area
             //Will throw a OutOfMemory Exception if you try to create and store the Bitmaps, so we only create at the point of request
             DatabaseGenerator newGenerator = new DatabaseGenerator();
-            for (int i = 0; i < 100000; i++)
+            for (int i = 0; i < 500; i++)
             {
                 newGenerator.GetNextAccount(out pin, out acctNo, out firstName, out lastName, out balance, out image ,i);
                 DataStruct currAccount = new DataStruct(acctNo, pin, balance, firstName, lastName, image);
