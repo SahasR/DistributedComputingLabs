@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using RestSharp;
 using APIClasses;
+using System.Net.Http;
 
 namespace AsyncClient
 {
@@ -34,21 +35,25 @@ namespace AsyncClient
             SearchButton.IsEnabled = false;
         }
 
-        private void setBaseURL(string baseURL)
-        {
-            this.baseURL = baseURL;
-            connect();
-        }
-
         private void connect()
         {
-            client = new RestClient(baseURL);
-            RestRequest request = new RestRequest("api/values");
-            RestResponse numEntries = client.Get(request);
-            //Also, tell me how many entries are there in the DB
-            TotalRecs.Text = numEntries.Content.ToString();
-            Go.IsEnabled = true;
-            SearchButton.IsEnabled = true;
+            try
+            {
+                client = new RestClient(baseURL);
+                RestRequest request = new RestRequest("api/values");
+                RestResponse numEntries = client.Get(request);
+                //Also, tell me how many entries are there in the DB
+                TotalRecs.Text = numEntries.Content.ToString();
+                Go.IsEnabled = true;
+                SearchButton.IsEnabled = true;
+            } catch (UriFormatException e)
+            {
+                baseURLBox.Text = "Invalid URL";
+            } catch (HttpRequestException e1)
+            {
+                baseURLBox.Text = "Couldn't connect to Client";
+            }
+            
         }
 
 
@@ -141,6 +146,7 @@ namespace AsyncClient
         private void setURL_Click(object sender, RoutedEventArgs e)
         {
             baseURL = baseURLBox.Text;
+            connect();
         }
     }
 }
