@@ -127,19 +127,22 @@ namespace AsyncClient
 
                 PictureBox.Dispatcher.BeginInvoke(new Action(() => PictureBox.Source = converter(image)));
             }
-            else
-            {
-                Search.Dispatcher.BeginInvoke(new Action(() => Search.Text = "Not Found"));
-            }
         }
 
         private DataIntermed fetchResults()
         {
+            DataIntermed dataIntermed = null;
             SearchData search = new SearchData(searchText);
             RestRequest request = new RestRequest("api/search");
             request.AddJsonBody(JsonConvert.SerializeObject(search));
             RestResponse resp = client.Post(request);
-            DataIntermed dataIntermed = JsonConvert.DeserializeObject<DataIntermed>(resp.Content);
+            if (resp.StatusCode == System.Net.HttpStatusCode.NotFound){
+                NotFoundException e = JsonConvert.DeserializeObject<NotFoundException>(resp.Content);
+                Search.Dispatcher.BeginInvoke(new Action(() => Search.Text = e.Message));
+            } else
+            {
+                dataIntermed = JsonConvert.DeserializeObject<DataIntermed>(resp.Content);
+            }   
             return dataIntermed;
         }
 

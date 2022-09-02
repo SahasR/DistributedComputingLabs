@@ -49,7 +49,7 @@ namespace BusinessTierAPI.Controllers
                 }
                 catch (FaultException<ServerFailureException> ex) { }
             }
-            return NotFound();
+            return Content(HttpStatusCode.NotFound, new NotFoundException("Couldn't find " + data.searchStr));
         }
     }
 }

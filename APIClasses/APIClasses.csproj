@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="NotFoundException.cs" />
     <Compile Include="SearchData.cs" />
     <Compile Include="DataIntermed.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
