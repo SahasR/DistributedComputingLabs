@@ -25,17 +25,23 @@ namespace AsyncClient
     {
         RestClient client;
         private string searchText;
+        private string baseURL;
 
         public MainWindow()
         {
             InitializeComponent();
-            string URL = "http://localhost:51641/";
-            client = new RestClient(URL);
+            //baseURL = "http://localhost:51641/";
+            client = new RestClient(baseURL);
             RestRequest request = new RestRequest("api/values");
             RestResponse numEntries = client.Get(request);
 
             //Also, tell me how many entries are there in the DB
             TotalRecs.Text = numEntries.Content.ToString();
+        }
+
+        private void setBaseURL(string baseURL)
+        {
+            this.baseURL = baseURL;
         }
 
         private void Go_Click(object sender, RoutedEventArgs e)
@@ -123,6 +129,10 @@ namespace AsyncClient
             DataIntermed dataIntermed = JsonConvert.DeserializeObject<DataIntermed>(resp.Content);
             return dataIntermed;
         }
-       
+
+        private void setURL_Click(object sender, RoutedEventArgs e)
+        {
+            baseURL = baseURLBox.Text;
+        }
     }
 }

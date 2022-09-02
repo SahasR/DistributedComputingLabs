@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:BankClient"
+        xmlns:local="clr-namespace:AsyncClient"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
@@ -76,7 +76,10 @@
         <TextBox x:Name="Search" HorizontalAlignment="Left" Margin="116,323,0,0" TextWrapping="Wrap" Text="Search" VerticalAlignment="Top" Width="139" Height="24"/>
         <Button x:Name="SearchButton" Content="Search!" HorizontalAlignment="Left" Margin="274,319,0,0" VerticalAlignment="Top" Height="32" Width="49" Click="SearchButton_Click"/>
         <Label x:Name="statusLabel" Content="Status" HorizontalAlignment="Left" Margin="255,407,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.85,0.197"/>
-        <ProgressBar x:Name="ProgressBar" HorizontalAlignment="Left" Height="10" Margin="136,289,0,0" VerticalAlignment="Top" Width="100"/>
+        <TextBox x:Name="baseURLBox" HorizontalAlignment="Left" Margin="579,40,0,0" TextWrapping="Wrap" Text="BaseURL&#xD;&#xA;" VerticalAlignment="Top" Width="120" Height="24"/>
+        <Button x:Name="setURL" HorizontalAlignment="Left" Margin="704,40,0,0" VerticalAlignment="Top" Click="setURL_Click">
+            <Button Content="SET"/>
+        </Button>
 
     </Grid>
 </Window>
