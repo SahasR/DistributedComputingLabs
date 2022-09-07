@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="BankServerImplementation.cs" />
     <Compile Include="BankServerInterface.cs" />
+    <Compile Include="Instance.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServerFailureException.cs" />
   </ItemGroup>

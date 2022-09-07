@@ -258,6 +258,10 @@
       <Project>{236DBD69-9FEB-4178-A736-49BE4E5F2D10}</Project>
       <Name>ServerLibrary</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Tutorial 1\DatabaseLib.csproj">
+      <Project>{08838fac-c811-4d74-b85a-4c0538b2cfaa}</Project>
+      <Name>DatabaseLib</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

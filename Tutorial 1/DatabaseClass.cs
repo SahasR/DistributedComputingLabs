@@ -10,7 +10,6 @@ namespace DatabaseLib
     public class DatabaseClass
     {
         List<DataStruct> dataStruct;
-
         public DatabaseClass()
         {
             dataStruct = new List<DataStruct>();
@@ -25,7 +24,7 @@ namespace DatabaseLib
             DatabaseGenerator newGenerator = new DatabaseGenerator();
             for (int i = 0; i < 500; i++)
             {
-                newGenerator.GetNextAccount(out pin, out acctNo, out firstName, out lastName, out balance, out image ,i);
+                newGenerator.GetNextAccount(out pin, out acctNo, out firstName, out lastName, out balance, out image, i);
                 DataStruct currAccount = new DataStruct(acctNo, pin, balance, firstName, lastName, image);
                 dataStruct.Add(currAccount);
             }

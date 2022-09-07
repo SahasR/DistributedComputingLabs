@@ -1,33 +1,21 @@
 ﻿using APIClasses;
 using BankServer;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using ServerLibrary;
 using System.Net;
-using System.Net.Http;
 using System.ServiceModel;
 using System.Web.Http;
+
 
 namespace BusinessTierAPI.Controllers
 {
     [RoutePrefix("api/search")]
     public class SearchController : ApiController
     {
-        private BankServerInterface connect()
-        {
-            ChannelFactory<BankServerInterface> foobFactory;
-            NetTcpBinding tcp = new NetTcpBinding();
-            string URL = "net.tcp://localhost:8100/BankService";
-            foobFactory = new ChannelFactory<BankServerInterface>(tcp, URL);
-            BankServerInterface foob = foobFactory.CreateChannel();
-            return foob;
-        }
-
-
+        
         [HttpPost]
         public IHttpActionResult Post([FromBody]SearchData data)
         {
-            BankServerInterface foob = connect();
+            BankServerInterface foob = Instance.getInterface();
             uint accountNumber;
             uint pinNumber;
             int currentBalance;

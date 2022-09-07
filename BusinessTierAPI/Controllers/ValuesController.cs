@@ -1,4 +1,5 @@
 ﻿using BankServer;
+using ServerLibrary;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,18 +13,10 @@ namespace BusinessTierAPI.Controllers
     public class ValuesController : ApiController
     {
         // GET api/values
-        public BankServerInterface connect()
-        {
-            ChannelFactory<BankServerInterface> foobFactory;
-            NetTcpBinding tcp = new NetTcpBinding();
-            string URL = "net.tcp://localhost:8100/BankService";
-            foobFactory = new ChannelFactory<BankServerInterface>(tcp, URL);
-            BankServerInterface foob = foobFactory.CreateChannel();
-            return foob;
-        }
+        
         public int Get()
         {
-            BankServerInterface foob = connect();
+            BankServerInterface foob = Instance.getInterface();
             return foob.GetNumEntries();
         }
 
