@@ -147,10 +147,6 @@
       <Project>{236dbd69-9feb-4178-a736-49be4e5f2d10}</Project>
       <Name>ServerLibrary</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TestClient\BankClient.csproj">
-      <Project>{b4511b36-133f-4989-b45c-a03ea3139404}</Project>
-      <Name>BankClient</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Tutorial 1\DatabaseLib.csproj">
       <Project>{08838fac-c811-4d74-b85a-4c0538b2cfaa}</Project>
       <Name>DatabaseLib</Name>
