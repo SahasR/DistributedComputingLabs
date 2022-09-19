@@ -1,13 +1,17 @@
 ﻿using APIClasses;
-using BankServer;
-using ServerLibrary;
+using Newtonsoft.Json;
+using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security.Principal;
 using System.ServiceModel;
 using System.Web.Http;
+using System.Web.Http.Description;
+using System.Xml.Linq;
+using WebDatabaseAPI.Models;
 
 namespace BusinessTierAPI.Controllers
 {
@@ -17,19 +21,21 @@ namespace BusinessTierAPI.Controllers
        
         [Route("{index}")]
         [HttpGet]
-
-        public DataIntermed Get(int index)
+        [ResponseType(typeof(Account))]
+        public IHttpActionResult Get(int index)
         {
-            BankServerInterface foob = Instance.getInterface();
-            
-            string fName = null, lName = null;
-            byte[] bitmapBytes;
-            int bal = 0;
-            uint acct = 0, pin = 0;
-
-            foob.GetValuesForEntry(index, out acct, out pin, out bal, out fName, out lName, out bitmapBytes);
-
-            return new DataIntermed(bal, acct, pin, fName, lName, bitmapBytes);
+            Account account = null;
+            RestClient restClient = new RestClient("http://localhost:58308/");
+            RestRequest restRequest = new RestRequest("api/Accounts/" + index.ToString());
+            RestResponse restResponse = restClient.Get(restRequest);
+            if (restResponse.StatusCode == HttpStatusCode.OK)
+            {
+                account = JsonConvert.DeserializeObject<Account>(restResponse.Content);
+                return Ok(account);
+            } else
+            {
+                return NotFound();
+            }
         }
     }
 }

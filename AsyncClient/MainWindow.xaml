@@ -69,17 +69,7 @@
         </TextBox>
         <Button x:Name="Go" Content="Go!" HorizontalAlignment="Left" Margin="542,317,0,0" VerticalAlignment="Top" Height="30" Width="45" Click="Go_Click" RenderTransformOrigin="0.491,0.534"/>
         <TextBlock HorizontalAlignment="Left" Height="0" Margin="451,317,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Width="3"/>
-        <TextBlock x:Name="TotalRecs" HorizontalAlignment="Left" Height="30" Margin="435,376,0,0" TextWrapping="Wrap" Text="Total Number of Records: " VerticalAlignment="Top" Width="121"/>
-        <TextBlock x:Name="Request_Counter" HorizontalAlignment="Left" Margin="309,381,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top"/>
-        <Label Content="Request Counter" HorizontalAlignment="Left" Margin="206,376,0,0" VerticalAlignment="Top"/>
         <Image x:Name="PictureBox" HorizontalAlignment="Left" Height="100" Margin="116,69,0,0" VerticalAlignment="Top" Width="100"/>
-        <TextBox x:Name="Search" HorizontalAlignment="Left" Margin="116,323,0,0" TextWrapping="Wrap" Text="Search" VerticalAlignment="Top" Width="139" Height="24"/>
-        <Button x:Name="SearchButton" Content="Search!" HorizontalAlignment="Left" Margin="274,319,0,0" VerticalAlignment="Top" Height="32" Width="49" Click="SearchButton_Click"/>
-        <Label x:Name="statusLabel" Content="Status" HorizontalAlignment="Left" Margin="255,407,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.85,0.197"/>
-        <TextBox x:Name="baseURLBox" HorizontalAlignment="Left" Margin="579,40,0,0" TextWrapping="Wrap" Text="BaseURL&#xD;&#xA;" VerticalAlignment="Top" Width="120" Height="24"/>
-        <Button x:Name="setURL" HorizontalAlignment="Left" Margin="704,40,0,0" VerticalAlignment="Top" Click="setURL_Click">
-            <Button Content="SET"/>
-        </Button>
 
     </Grid>
 </Window>

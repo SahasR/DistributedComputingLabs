@@ -1,6 +1,4 @@
-﻿using BankServer;
-using ServerLibrary;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -16,8 +14,7 @@ namespace BusinessTierAPI.Controllers
         
         public int Get()
         {
-            BankServerInterface foob = Instance.getInterface();
-            return foob.GetNumEntries();
+            return 0;
         }
 
         // GET api/values/5
