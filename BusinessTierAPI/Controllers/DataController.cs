@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security.Principal;
 using System.Web.Http;
 using System.Web.Http.Description;
 using WebDatabaseAPI.Models;
@@ -43,24 +44,36 @@ namespace BusinessTierAPI.Controllers
             RestResponse restResponse = restClient.Get(restRequest);
             IEnumerable<Account> accounts = JsonConvert.DeserializeObject<IEnumerable<Account>>(restResponse.Content);
             int count = accounts.Count();
-            Account newAccount = null;
-            if (count == 0)
+            if (account.Id != 0)
             {
-                newAccount = new Account(1, account.FirstName, account.LastName, account.Balance, account.AcctNo, account.Pin, account.Image);
-            } else
-            {
-                Account lastAccount = accounts.Last();
-                newAccount = new Account(lastAccount.Id+1, account.FirstName, account.LastName, account.Balance, account.AcctNo, account.Pin, account.Image);
-            }
-            restRequest = new RestRequest("api/Accounts/");
-            restRequest.AddBody(newAccount);
-            restResponse = restClient.Post(restRequest);
-            if (restResponse.StatusCode == HttpStatusCode.OK)
-            {
+                restRequest = new RestRequest("api/Accounts/");
+                restRequest.AddBody(account);
+                restResponse = restClient.Post(restRequest);
                 return Ok();
-            } else
+            }
+            else
             {
-                return NotFound();
+                Account newAccount;
+                if (count == 0)
+                {
+                    newAccount = new Account(1, account.FirstName, account.LastName, account.Balance, account.AcctNo, account.Pin, account.Image);
+                }
+                else
+                {
+                    Account lastAccount = accounts.Last();
+                    newAccount = new Account(lastAccount.Id + 1, account.FirstName, account.LastName, account.Balance, account.AcctNo, account.Pin, account.Image);
+                }
+                restRequest = new RestRequest("api/Accounts/");
+                restRequest.AddBody(newAccount);
+                restResponse = restClient.Post(restRequest);
+                if (restResponse.StatusCode == HttpStatusCode.OK)
+                {
+                    return Ok();
+                }
+                else
+                {
+                    return NotFound();
+                }
             }
         }
     }

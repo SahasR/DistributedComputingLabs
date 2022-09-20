@@ -45,13 +45,20 @@ namespace AsyncClient
                         account = JsonConvert.DeserializeObject<Account>(response.Content);
                         FNameBox.Text = account.FirstName;
                         LNameBox.Text = account.LastName;
-                        Balance.Text = account.Balance.ToString("C");
+                        Balance.Text = account.Balance.ToString();
                         AcctNo.Text = account.AcctNo.ToString();
                         Pin.Text = account.Pin.ToString();
                         byte[] bitmapBytes = account.Image;
-                        MemoryStream ms = new MemoryStream(bitmapBytes);
-                        Bitmap image = (Bitmap)Bitmap.FromStream(ms);
-                        PictureBox.Source = converter(image);
+                        try
+                        {
+                            MemoryStream ms = new MemoryStream(bitmapBytes);
+                            Bitmap image = (Bitmap)Bitmap.FromStream(ms);
+                            PictureBox.Source = converter(image);
+                        }
+                        catch (ArgumentException ex)
+                        {
+                            MessageBox.Show(ex.Message);
+                        }
                     } else
                     {
                         Index.Text = "Not Found!";
@@ -93,13 +100,20 @@ namespace AsyncClient
                 account = JsonConvert.DeserializeObject<Account>(restResponse.Content);
                 FNameBox.Text = account.FirstName;
                 LNameBox.Text = account.LastName;
-                Balance.Text = account.Balance.ToString("C");
+                Balance.Text = account.Balance.ToString();
                 AcctNo.Text = account.AcctNo.ToString();
                 Pin.Text = account.Pin.ToString();
                 byte[] bitmapBytes = account.Image;
-                MemoryStream ms = new MemoryStream(bitmapBytes);
-                Bitmap image = (Bitmap)Bitmap.FromStream(ms);
-                PictureBox.Source = converter(image);
+                try
+                {
+                    MemoryStream ms = new MemoryStream(bitmapBytes);
+                    Bitmap image = (Bitmap)Bitmap.FromStream(ms);
+                    PictureBox.Source = converter(image);
+                }
+                catch (ArgumentException ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
             }
         }
 
@@ -137,7 +151,25 @@ namespace AsyncClient
             }
             else
             {
-               
+                RestRequest request = new RestRequest("api/data/" + account.Id);
+                RestResponse restResponse = restClient.Delete(request);
+                if (restResponse.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    account.FirstName = FNameBox.Text;
+                    account.LastName = LNameBox.Text;
+                    account.Balance = decimal.Parse(Balance.Text);
+                    account.AcctNo = AcctNo.Text;
+                    account.Pin = Pin.Text;
+                    request = new RestRequest("api/data/");
+                    request.AddObject(account);
+
+                    RestResponse response = restClient.Post(request);
+                    if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                    {
+                        SearchBox.Text = "Updated!";
+                    }
+
+                }
             }
         }
 
@@ -147,11 +179,11 @@ namespace AsyncClient
             RestRequest request = new RestRequest("api/data/");
             request.AddObject(account);
             
-                RestResponse response = restClient.Post(request);
-                if (response.StatusCode == System.Net.HttpStatusCode.OK)
-                {
-                    SearchBox.Text = "Updated!";
-                }
+            RestResponse response = restClient.Post(request);
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                SearchBox.Text = "Updated!";
+            }
          
         }
 
