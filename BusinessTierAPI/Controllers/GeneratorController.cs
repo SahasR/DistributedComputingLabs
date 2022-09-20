@@ -30,15 +30,28 @@ namespace BusinessTierAPI.Controllers
             restRequest = new RestRequest("api/Accounts/");
             restResponse = restClient.Get(restRequest);
             IEnumerable<Account> accounts = JsonConvert.DeserializeObject<IEnumerable<Account>>(restResponse.Content);
-            int numElements = accounts.Count();
-
-            for (int i = numElements+1; i <= numElements+100; i++)
+            if (accounts.Count() == 0)
             {
-                account = GetNextAccount(i, i);
-                restRequest = new RestRequest("api/Accounts/");
-                restRequest.AddBody(account);
-                restResponse = restClient.Post(restRequest);
+                for (int i = 1; i <= 100; i++)
+                {
+                    account = GetNextAccount(i, i);
+                    restRequest = new RestRequest("api/Accounts/");
+                    restRequest.AddBody(account);
+                    restResponse = restClient.Post(restRequest);
+                }
+            } else
+            {
+                Account lastAccount = accounts.Last();
+
+                for (int i = lastAccount.Id + 1; i <= lastAccount.Id + 100; i++)
+                {
+                    account = GetNextAccount(i, i);
+                    restRequest = new RestRequest("api/Accounts/");
+                    restRequest.AddBody(account);
+                    restResponse = restClient.Post(restRequest);
+                }
             }
+            
         } 
         private string GetFirstName(int seed)
         {

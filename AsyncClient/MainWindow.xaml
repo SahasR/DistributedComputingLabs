@@ -57,7 +57,7 @@
                 </TransformGroup>
             </TextBox.RenderTransform>
         </TextBox>
-        <TextBox x:Name="Index" HorizontalAlignment="Left" Margin="402,317,0,0" TextWrapping="Wrap" Text="Index" VerticalAlignment="Top" Width="122" Height="31" RenderTransformOrigin="0.5,0.5">
+        <TextBox x:Name="Index" HorizontalAlignment="Left" Margin="402,317,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="122" Height="31" RenderTransformOrigin="0.5,0.5">
             <TextBox.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
@@ -67,9 +67,15 @@
                 </TransformGroup>
             </TextBox.RenderTransform>
         </TextBox>
-        <Button x:Name="Go" Content="Go!" HorizontalAlignment="Left" Margin="542,317,0,0" VerticalAlignment="Top" Height="30" Width="45" Click="Go_Click" RenderTransformOrigin="0.491,0.534"/>
+        <Button x:Name="Go" Content="Index!" HorizontalAlignment="Left" Margin="542,317,0,0" VerticalAlignment="Top" Height="30" Width="45" Click="Go_Click" RenderTransformOrigin="0.491,0.534"/>
         <TextBlock HorizontalAlignment="Left" Height="0" Margin="451,317,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Width="3"/>
         <Image x:Name="PictureBox" HorizontalAlignment="Left" Height="100" Margin="116,69,0,0" VerticalAlignment="Top" Width="100"/>
+        <TextBox x:Name="SearchBox" HorizontalAlignment="Left" Margin="143,317,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="126" Height="30"/>
+        <Button x:Name="SearchButton" Content="Search" HorizontalAlignment="Left" Margin="291,317,0,0" VerticalAlignment="Top" Height="35" Width="51" Click="SearchButton_Click"/>
+        <Button x:Name="Generate" Content="+100 Data" HorizontalAlignment="Left" Margin="632,33,0,0" VerticalAlignment="Top" Height="36" Width="72" Click="Generate_Click"/>
+        <Button x:Name="Delete" Content="Delete" HorizontalAlignment="Left" Margin="632,95,0,0" VerticalAlignment="Top" Height="30" Width="76" RenderTransformOrigin="0.491,0.51" Click="Delete_Click"/>
+        <Button x:Name="Update" Content="Update" HorizontalAlignment="Left" Margin="632,155,0,0" VerticalAlignment="Top" Height="30" Width="76" Click="Update_Click"/>
+        <Button x:Name="Insert" Content="Insert" HorizontalAlignment="Left" Margin="632,217,0,0" VerticalAlignment="Top" Height="31" Width="76" Click="Insert_Click"/>
 
     </Grid>
 </Window>
