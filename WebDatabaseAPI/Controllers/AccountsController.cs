@@ -17,7 +17,7 @@ namespace WebDatabaseAPI.Controllers
         private AccountsDBEntities db = new AccountsDBEntities();
 
         // GET: api/Accounts
-        public IQueryable<Account> GetAccounts()
+        public IEnumerable<Account> GetAccounts()
         {
             return db.Accounts;
         }
