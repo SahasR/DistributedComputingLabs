@@ -11,6 +11,7 @@ using RestSharp;
 using APIClasses;
 using System.Net.Http;
 using WebDatabaseAPI.Models;
+using System.Reflection;
 
 namespace AsyncClient
 {
@@ -22,6 +23,9 @@ namespace AsyncClient
         public MainWindow()
         {
             InitializeComponent();
+            RestClient restClient = new RestClient("http://localhost:51641/");
+            RestRequest request = new RestRequest("api/generator/");
+            RestResponse response = restClient.Put(request);
         }
 
         private void Go_Click(object sender, RoutedEventArgs e)
@@ -46,9 +50,9 @@ namespace AsyncClient
                     AcctNo.Text = account.AcctNo.ToString();
                     Pin.Text = account.Pin.ToString();
                     byte[] bitmapBytes = account.Image;
-                   // MemoryStream ms = new MemoryStream(bitmapBytes);
-                   // Bitmap image = (Bitmap)Bitmap.FromStream(ms);
-                    // PictureBox.Source = converter(image);
+                    MemoryStream ms = new MemoryStream(bitmapBytes);
+                    Bitmap image = (Bitmap)Bitmap.FromStream(ms);
+                    PictureBox.Source = converter(image);
                     //Picture Boxes only use ImageSource format so I have a function that creates a ImageSource from BitMa
                     //Just to see how many requests you have made
                 }

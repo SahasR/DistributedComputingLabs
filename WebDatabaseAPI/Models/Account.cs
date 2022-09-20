@@ -14,6 +14,22 @@ namespace WebDatabaseAPI.Models
     
     public partial class Account
     {
+        public Account(int id, string firstName, string lastName, decimal balance, string acctNo, string pin, byte[] image)
+        {
+            Id = id;
+            FirstName = firstName;
+            LastName = lastName;
+            Balance = balance;
+            AcctNo = acctNo;
+            Pin = pin;
+            Image = image;
+        }
+
+        public Account()
+        {
+
+        }
+
         public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
