@@ -76,6 +76,7 @@
         <Button x:Name="Delete" Content="Delete" HorizontalAlignment="Left" Margin="632,95,0,0" VerticalAlignment="Top" Height="30" Width="76" RenderTransformOrigin="0.491,0.51" Click="Delete_Click"/>
         <Button x:Name="Update" Content="Update" HorizontalAlignment="Left" Margin="632,155,0,0" VerticalAlignment="Top" Height="30" Width="76" Click="Update_Click"/>
         <Button x:Name="Insert" Content="Insert" HorizontalAlignment="Left" Margin="632,217,0,0" VerticalAlignment="Top" Height="31" Width="76" Click="Insert_Click"/>
+        <Button x:Name="Upload" Content="Upload IMG" HorizontalAlignment="Left" Margin="143,170,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.496,0.578" Height="29" Width="73" Click="Upload_Click"/>
 
     </Grid>
 </Window>

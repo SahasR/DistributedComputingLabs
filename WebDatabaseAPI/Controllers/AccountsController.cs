@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using System.Data.Entity.Validation;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -37,6 +39,7 @@ namespace WebDatabaseAPI.Controllers
 
         // PUT: api/Accounts/5
         [ResponseType(typeof(void))]
+        [Route("api/Accounts/{id}/{account}")]
         public IHttpActionResult PutAccount(int id, Account account)
         {
             if (!ModelState.IsValid)
@@ -84,6 +87,16 @@ namespace WebDatabaseAPI.Controllers
             try
             {
                 db.SaveChanges();
+            }
+            catch (DbEntityValidationException ex) 
+            { 
+                foreach (var entityValidationErrors in ex.EntityValidationErrors) 
+                { 
+                        foreach (var validationError in entityValidationErrors.ValidationErrors) 
+                        { 
+                            Debug.Write("Property: " + validationError.PropertyName + " Error: " + validationError.ErrorMessage); 
+                        } 
+                } 
             }
             catch (DbUpdateException)
             {

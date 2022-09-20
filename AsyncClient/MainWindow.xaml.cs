@@ -13,6 +13,7 @@ using System.Net.Http;
 using WebDatabaseAPI.Models;
 using System.Reflection;
 using System.Diagnostics;
+using Microsoft.Win32;
 
 namespace AsyncClient
 {
@@ -22,6 +23,8 @@ namespace AsyncClient
     public partial class MainWindow : Window
     {
         Account account = null;
+        RestClient restClient = new RestClient("http://localhost:51641/");
+        byte[] bytes = null;
         public MainWindow()
         {
             InitializeComponent();
@@ -35,22 +38,25 @@ namespace AsyncClient
                 int index = Int32.Parse(Index.Text);
                 if (index > 0)
                 {
-                    RestClient restClient = new RestClient("http://localhost:51641/");
                     RestRequest request = new RestRequest("api/values/" + index.ToString());
                     RestResponse response = restClient.Get(request);
                     if (response.StatusCode == System.Net.HttpStatusCode.OK)
                     {
                         account = JsonConvert.DeserializeObject<Account>(response.Content);
+                        FNameBox.Text = account.FirstName;
+                        LNameBox.Text = account.LastName;
+                        Balance.Text = account.Balance.ToString("C");
+                        AcctNo.Text = account.AcctNo.ToString();
+                        Pin.Text = account.Pin.ToString();
+                        byte[] bitmapBytes = account.Image;
+                        MemoryStream ms = new MemoryStream(bitmapBytes);
+                        Bitmap image = (Bitmap)Bitmap.FromStream(ms);
+                        PictureBox.Source = converter(image);
+                    } else
+                    {
+                        Index.Text = "Not Found!";
                     }
-                    FNameBox.Text = account.FirstName;
-                    LNameBox.Text = account.LastName;
-                    Balance.Text = account.Balance.ToString("C");
-                    AcctNo.Text = account.AcctNo.ToString();
-                    Pin.Text = account.Pin.ToString();
-                    byte[] bitmapBytes = account.Image;
-                    MemoryStream ms = new MemoryStream(bitmapBytes);
-                    Bitmap image = (Bitmap)Bitmap.FromStream(ms);
-                    PictureBox.Source = converter(image);
+                    
                     //Picture Boxes only use ImageSource format so I have a function that creates a ImageSource from BitMa
                     //Just to see how many requests you have made
                 }
@@ -68,7 +74,6 @@ namespace AsyncClient
 
         private void Generate_Click(object sender, RoutedEventArgs e)
         {
-            RestClient restClient = new RestClient("http://localhost:51641/");
             RestRequest request = new RestRequest("api/generator/");
             restClient.Put(request);
         }
@@ -76,7 +81,7 @@ namespace AsyncClient
         private void SearchButton_Click(object sender, RoutedEventArgs e)
         {
             SearchData data = new SearchData(SearchBox.Text);
-            RestClient restClient = new RestClient("http://localhost:51641/");
+            
             RestRequest request = new RestRequest("api/search/");
             request.AddJsonBody(JsonConvert.SerializeObject(data));
             RestResponse restResponse = restClient.Post(request);
@@ -104,9 +109,22 @@ namespace AsyncClient
             {
                 SearchBox.Text = "You haven't selected a user to delete!";
                 Index.Text = "You haven't selected a user to delete!";
+
             } else
             {
-                account = null;
+                RestRequest request = new RestRequest("api/data/" + account.Id);
+                RestResponse restResponse = restClient.Delete(request);
+                if (restResponse.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    SearchBox.Text = "Successfully deleted!";
+                    account = null;
+                    FNameBox.Text = "";
+                    LNameBox.Text = "";
+                    Balance.Text = "";
+                    AcctNo.Text = "";
+                    Pin.Text = "";
+                    PictureBox.Source = null;
+                }              
             }
         }
 
@@ -125,7 +143,30 @@ namespace AsyncClient
 
         private void Insert_Click(object sender, RoutedEventArgs e)
         {
+            Account account = new Account(0, FNameBox.Text, LNameBox.Text, decimal.Parse(Balance.Text), AcctNo.Text, Pin.Text, bytes);
+            RestRequest request = new RestRequest("api/data/");
+            request.AddObject(account);
+            
+                RestResponse response = restClient.Post(request);
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    SearchBox.Text = "Updated!";
+                }
+         
+        }
 
+        private void Upload_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog fd = new OpenFileDialog();
+            if (fd.ShowDialog() == true)
+            {
+                Uri uri = new Uri(fd.FileName);
+                Bitmap bmp = new Bitmap(fd.FileName);
+                PictureBox.Source = converter(bmp);
+                MemoryStream ms = new MemoryStream();
+                bmp.Save(ms, System.Drawing.Imaging.ImageFormat.Bmp);
+                bytes = ms.GetBuffer();
+            }
         }
     }
 }
