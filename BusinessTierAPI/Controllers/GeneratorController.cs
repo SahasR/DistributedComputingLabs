@@ -3,6 +3,7 @@ using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -92,16 +93,20 @@ namespace BusinessTierAPI.Controllers
             return balance;
         }
 
-        private string GetImage(int seed)
+        private Bitmap GetProfilePic()
         {
-            string[] locations = { "C:/Users/sahas/Source/Repos/DistributedComputingLab01/DatabaseImages/Images/1.jpg",
-                "C:/Users/sahas/Source/Repos/DistributedComputingLab01/DatabaseImages/Images/2.png" };
-            //When storing locations I had to store locations as Absolute Paths because this program will have a different working directory when in debug mode
-            //And a different working directory when in final build executable. So these are two placeholder images, often there will be a seperate server with the images loaded
-            //from a URL so it shouldn't be too bad, currently however it is stored inside the .dll file for the Databases.
-            Random random = new Random(seed);
-            string location = locations[random.Next(0, 2)];
-            return location;
+            Random random = new Random();
+            var image = new Bitmap(64, 64);
+
+            for (var x = 0; x < 64; x++)
+            {
+                for (var y = 0; y < 64; y++)
+                {
+                    image.SetPixel(x, y, Color.FromArgb(random.Next(255), random.Next(255), random.Next(255)));
+                }
+            }
+            Bitmap profilePic = image;
+            return profilePic;
         }
 
         public Account GetNextAccount(int seed, int id)
@@ -111,12 +116,20 @@ namespace BusinessTierAPI.Controllers
             string firstName = GetFirstName(seed);
             string lastName = GetLastName(seed);
             decimal balance = GetBalance(seed);
-            String imageLocation = GetImage(seed);
-            Bitmap image = new Bitmap(imageLocation, true);
-            MemoryStream ms = new MemoryStream();
-            image.Save(ms, System.Drawing.Imaging.ImageFormat.Bmp);
-            byte[] bytes = ms.GetBuffer();
-            return new Account(id, firstName, lastName, balance, acctNo.ToString(), pin.ToString(), bytes);
+            Bitmap image = GetProfilePic();
+            string bitmapImage = BitmapToString(image);
+            return new Account(id, firstName, lastName, balance, acctNo.ToString(), pin.ToString(), bitmapImage);
+        }
+
+        private string BitmapToString(Bitmap bitmap)
+        {
+            using (var stream = new MemoryStream())
+            {
+                bitmap.Save(stream, ImageFormat.Bmp);
+                byte[] byteImage = stream.ToArray();
+                string image = Convert.ToBase64String(byteImage);
+                return image;
+            }
         }
     }
 

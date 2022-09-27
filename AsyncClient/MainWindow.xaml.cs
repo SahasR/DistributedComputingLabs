@@ -14,6 +14,7 @@ using WebDatabaseAPI.Models;
 using System.Reflection;
 using System.Diagnostics;
 using Microsoft.Win32;
+using System.Drawing.Imaging;
 
 namespace AsyncClient
 {
@@ -24,7 +25,7 @@ namespace AsyncClient
     {
         Account account = null;
         RestClient restClient = new RestClient("http://localhost:51641/");
-        byte[] bytes = null;
+        string uploadIMG = null;
         public MainWindow()
         {
             InitializeComponent();
@@ -48,17 +49,9 @@ namespace AsyncClient
                         Balance.Text = account.Balance.ToString();
                         AcctNo.Text = account.AcctNo.ToString();
                         Pin.Text = account.Pin.ToString();
-                        byte[] bitmapBytes = account.Image;
-                        try
-                        {
-                            MemoryStream ms = new MemoryStream(bitmapBytes);
-                            Bitmap image = (Bitmap)Bitmap.FromStream(ms);
-                            PictureBox.Source = converter(image);
-                        }
-                        catch (ArgumentException ex)
-                        {
-                            MessageBox.Show(ex.Message);
-                        }
+                        Bitmap image = StringToBitmap(account.Image);
+                        ImageSource imgSource = converter(image);
+                        PictureBox.Source = imgSource;
                     } else
                     {
                         Index.Text = "Not Found!";
@@ -103,17 +96,9 @@ namespace AsyncClient
                 Balance.Text = account.Balance.ToString();
                 AcctNo.Text = account.AcctNo.ToString();
                 Pin.Text = account.Pin.ToString();
-                byte[] bitmapBytes = account.Image;
-                try
-                {
-                    MemoryStream ms = new MemoryStream(bitmapBytes);
-                    Bitmap image = (Bitmap)Bitmap.FromStream(ms);
-                    PictureBox.Source = converter(image);
-                }
-                catch (ArgumentException ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
+                Bitmap image = StringToBitmap(account.Image);
+                ImageSource imgSource = converter(image);
+                PictureBox.Source = imgSource;
             }
         }
 
@@ -175,7 +160,8 @@ namespace AsyncClient
 
         private void Insert_Click(object sender, RoutedEventArgs e)
         {
-            Account account = new Account(0, FNameBox.Text, LNameBox.Text, decimal.Parse(Balance.Text), AcctNo.Text, Pin.Text, bytes);
+
+            Account account = new Account(0, FNameBox.Text, LNameBox.Text, decimal.Parse(Balance.Text), AcctNo.Text, Pin.Text, uploadIMG);
             RestRequest request = new RestRequest("api/data/");
             request.AddObject(account);
             
@@ -195,10 +181,32 @@ namespace AsyncClient
                 Uri uri = new Uri(fd.FileName);
                 Bitmap bmp = new Bitmap(fd.FileName);
                 PictureBox.Source = converter(bmp);
-                MemoryStream ms = new MemoryStream();
-                bmp.Save(ms, System.Drawing.Imaging.ImageFormat.Bmp);
-                bytes = ms.GetBuffer();
+                uploadIMG = BitmapToString(bmp);
             }
+        }
+
+        private string BitmapToString(Bitmap bitmap)
+        {
+            using (var stream = new MemoryStream())
+            {
+                bitmap.Save(stream, ImageFormat.Bmp);
+                byte[] byteImage = stream.ToArray();
+                string image = Convert.ToBase64String(byteImage);
+                return image;
+            }
+        }
+
+        private Bitmap StringToBitmap(String bitmap)
+        {
+            Bitmap bmpReturn = null;
+            byte[] byteBuffer = Convert.FromBase64String(bitmap);
+            MemoryStream memoryStream = new MemoryStream(byteBuffer);
+            memoryStream.Position = 0;
+            bmpReturn = (Bitmap)Bitmap.FromStream(memoryStream);
+            memoryStream.Close();
+            memoryStream = null;
+            byteBuffer = null;
+            return bmpReturn;
         }
     }
 }

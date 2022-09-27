@@ -14,7 +14,7 @@ namespace WebDatabaseAPI.Models
     
     public partial class Account
     {
-        public Account(int id, string firstName, string lastName, decimal balance, string acctNo, string pin, byte[] image)
+        public Account(int id, string firstName, string lastName, decimal balance, string acctNo, string pin, string image)
         {
             Id = id;
             FirstName = firstName;
@@ -36,6 +36,6 @@ namespace WebDatabaseAPI.Models
         public decimal Balance { get; set; }
         public string AcctNo { get; set; }
         public string Pin { get; set; }
-        public byte[] Image { get; set; }
+        public string Image { get; set; }
     }
 }
