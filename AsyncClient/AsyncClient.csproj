@@ -135,6 +135,10 @@
       <Project>{B1BFA712-024C-46EB-B544-CA3B2FEE2325}</Project>
       <Name>APIClasses</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DatabaseAPI\DatabaseAPI.csproj">
+      <Project>{C13F75F7-77B5-427A-93D5-95A32B33AFF6}</Project>
+      <Name>DatabaseAPI</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

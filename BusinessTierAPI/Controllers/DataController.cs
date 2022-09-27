@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using DatabaseAPI.Models;
+using Newtonsoft.Json;
 using RestSharp;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,6 @@ using System.Net.Http;
 using System.Security.Principal;
 using System.Web.Http;
 using System.Web.Http.Description;
-using WebDatabaseAPI.Models;
 
 namespace BusinessTierAPI.Controllers
 {
@@ -21,8 +21,8 @@ namespace BusinessTierAPI.Controllers
         [ResponseType(typeof(void))]
         public IHttpActionResult DeleteAccount(int index)
         {
-            RestClient restClient = new RestClient("http://localhost:58308/");
-            RestRequest restRequest = new RestRequest("api/Accounts/" + index);
+            RestClient restClient = new RestClient("http://localhost:54227/");
+            RestRequest restRequest = new RestRequest("api/StudentTables/" + index);
             RestResponse restResponse = restClient.Delete(restRequest);
             if (restResponse.StatusCode == HttpStatusCode.OK)
             {
@@ -36,34 +36,34 @@ namespace BusinessTierAPI.Controllers
 
         [HttpPost]
         [ResponseType(typeof(void))]
-        public IHttpActionResult InsertAccount(Account account)
+        public IHttpActionResult InsertAccount(StudentTable account)
         {
          
-            RestClient restClient = new RestClient("http://localhost:58308/");
-            RestRequest restRequest = new RestRequest("api/Accounts/");
+            RestClient restClient = new RestClient("http://localhost:54227/");
+            RestRequest restRequest = new RestRequest("api/StudentTables/");
             RestResponse restResponse = restClient.Get(restRequest);
-            IEnumerable<Account> accounts = JsonConvert.DeserializeObject<IEnumerable<Account>>(restResponse.Content);
+            IEnumerable<StudentTable> accounts = JsonConvert.DeserializeObject<IEnumerable<StudentTable>>(restResponse.Content);
             int count = accounts.Count();
-            if (account.Id != 0)
+            if (account.id != 0)
             {
-                restRequest = new RestRequest("api/Accounts/");
+                restRequest = new RestRequest("api/StudentTables/");
                 restRequest.AddBody(account);
                 restResponse = restClient.Post(restRequest);
                 return Ok();
             }
             else
             {
-                Account newAccount;
+                StudentTable newAccount;
                 if (count == 0)
                 {
-                    newAccount = new Account(1, account.FirstName, account.LastName, account.Balance, account.AcctNo, account.Pin, account.Image);
+                    newAccount = new StudentTable(1, account.firstName, account.lastName, account.balance, account.acctNo, account.pin, account.image);
                 }
                 else
                 {
-                    Account lastAccount = accounts.Last();
-                    newAccount = new Account(lastAccount.Id + 1, account.FirstName, account.LastName, account.Balance, account.AcctNo, account.Pin, account.Image);
+                    StudentTable lastAccount = accounts.Last();
+                    newAccount = new StudentTable(lastAccount.id + 1, account.firstName, account.lastName, account.balance, account.acctNo, account.pin, account.image);
                 }
-                restRequest = new RestRequest("api/Accounts/");
+                restRequest = new RestRequest("api/StudentTables/");
                 restRequest.AddBody(newAccount);
                 restResponse = restClient.Post(restRequest);
                 if (restResponse.StatusCode == HttpStatusCode.OK)

@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APIClasses", "APIClasses\AP
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseImages", "DatabaseImages\DatabaseImages.csproj", "{1382CF31-11FF-48DF-B565-5EBB83520F5C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseAPI", "DatabaseAPI\DatabaseAPI.csproj", "{C13F75F7-77B5-427A-93D5-95A32B33AFF6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{1382CF31-11FF-48DF-B565-5EBB83520F5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1382CF31-11FF-48DF-B565-5EBB83520F5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1382CF31-11FF-48DF-B565-5EBB83520F5C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C13F75F7-77B5-427A-93D5-95A32B33AFF6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C13F75F7-77B5-427A-93D5-95A32B33AFF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C13F75F7-77B5-427A-93D5-95A32B33AFF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C13F75F7-77B5-427A-93D5-95A32B33AFF6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

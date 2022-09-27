@@ -1,4 +1,5 @@
 ﻿using APIClasses;
+using DatabaseAPI.Models;
 using Newtonsoft.Json;
 using RestSharp;
 using System;
@@ -11,7 +12,6 @@ using System.ServiceModel;
 using System.Web.Http;
 using System.Web.Http.Description;
 using System.Xml.Linq;
-using WebDatabaseAPI.Models;
 
 namespace BusinessTierAPI.Controllers
 {
@@ -21,16 +21,16 @@ namespace BusinessTierAPI.Controllers
        
         [Route("{index}")]
         [HttpGet]
-        [ResponseType(typeof(Account))]
+        [ResponseType(typeof(StudentTable))]
         public IHttpActionResult Get(int index)
         {
-            Account account = null;
-            RestClient restClient = new RestClient("http://localhost:58308/");
-            RestRequest restRequest = new RestRequest("api/Accounts/" + index.ToString());
+            StudentTable account = null;
+            RestClient restClient = new RestClient("http://localhost:54227/");
+            RestRequest restRequest = new RestRequest("api/StudentTables/" + index.ToString());
             RestResponse restResponse = restClient.Get(restRequest);
             if (restResponse.StatusCode == HttpStatusCode.OK)
             {
-                account = JsonConvert.DeserializeObject<Account>(restResponse.Content);
+                account = JsonConvert.DeserializeObject<StudentTable>(restResponse.Content);
                 return Ok(account);
             } else
             {

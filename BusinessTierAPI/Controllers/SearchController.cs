@@ -1,4 +1,5 @@
 ﻿using APIClasses;
+using DatabaseAPI.Models;
 using Newtonsoft.Json;
 using RestSharp;
 using System.Collections.Generic;
@@ -11,7 +12,6 @@ using System.Security.Principal;
 using System.ServiceModel;
 using System.Web.Http;
 using System.Web.Http.Description;
-using WebDatabaseAPI.Models;
 
 namespace BusinessTierAPI.Controllers
 {
@@ -21,17 +21,17 @@ namespace BusinessTierAPI.Controllers
     {
         
         [HttpPost]
-        [ResponseType(typeof(Account))]
+        [ResponseType(typeof(StudentTable))]
         public IHttpActionResult Post([FromBody]SearchData data)
         {
-            RestClient restClient = new RestClient("http://localhost:58308/");
-            RestRequest restRequest = new RestRequest("api/Accounts/");
+            RestClient restClient = new RestClient("http://localhost:54227/");
+            RestRequest restRequest = new RestRequest("api/StudentTables/");
             RestResponse restResponse = restClient.Get(restRequest);
-            IEnumerable<Account> accounts = JsonConvert.DeserializeObject<IEnumerable<Account>>(restResponse.Content);
-            foreach (Account account in accounts)
+            IEnumerable<StudentTable> accounts = JsonConvert.DeserializeObject<IEnumerable<StudentTable>>(restResponse.Content);
+            foreach (StudentTable account in accounts)
             {
                 
-                if (account.LastName.ToLower().Contains(data.searchStr.ToLower())){
+                if (account.lastName.ToLower().Contains(data.searchStr.ToLower())){
                     return Ok(account);
                 }
             }

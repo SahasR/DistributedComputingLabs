@@ -10,11 +10,11 @@ using Newtonsoft.Json;
 using RestSharp;
 using APIClasses;
 using System.Net.Http;
-using WebDatabaseAPI.Models;
 using System.Reflection;
 using System.Diagnostics;
 using Microsoft.Win32;
 using System.Drawing.Imaging;
+using DatabaseAPI.Models;
 
 namespace AsyncClient
 {
@@ -23,7 +23,7 @@ namespace AsyncClient
     /// </summary>
     public partial class MainWindow : Window
     {
-        Account account = null;
+        StudentTable account = null;
         RestClient restClient = new RestClient("http://localhost:51641/");
         string uploadIMG = null;
         public MainWindow()
@@ -43,13 +43,13 @@ namespace AsyncClient
                     RestResponse response = restClient.Get(request);
                     if (response.StatusCode == System.Net.HttpStatusCode.OK)
                     {
-                        account = JsonConvert.DeserializeObject<Account>(response.Content);
-                        FNameBox.Text = account.FirstName;
-                        LNameBox.Text = account.LastName;
-                        Balance.Text = account.Balance.ToString();
-                        AcctNo.Text = account.AcctNo.ToString();
-                        Pin.Text = account.Pin.ToString();
-                        Bitmap image = StringToBitmap(account.Image);
+                        account = JsonConvert.DeserializeObject<StudentTable>(response.Content);
+                        FNameBox.Text = account.firstName;
+                        LNameBox.Text = account.lastName;
+                        Balance.Text = account.balance.ToString();
+                        AcctNo.Text = account.acctNo.ToString();
+                        Pin.Text = account.pin.ToString();
+                        Bitmap image = StringToBitmap(account.image);
                         ImageSource imgSource = converter(image);
                         PictureBox.Source = imgSource;
                     } else
@@ -90,13 +90,13 @@ namespace AsyncClient
                 SearchBox.Text = "Not Found!";
             } else
             {
-                account = JsonConvert.DeserializeObject<Account>(restResponse.Content);
-                FNameBox.Text = account.FirstName;
-                LNameBox.Text = account.LastName;
-                Balance.Text = account.Balance.ToString();
-                AcctNo.Text = account.AcctNo.ToString();
-                Pin.Text = account.Pin.ToString();
-                Bitmap image = StringToBitmap(account.Image);
+                account = JsonConvert.DeserializeObject<StudentTable>(restResponse.Content);
+                FNameBox.Text = account.firstName;
+                LNameBox.Text = account.lastName;
+                Balance.Text = account.balance.ToString();
+                AcctNo.Text = account.acctNo.ToString();
+                Pin.Text = account.pin.ToString();
+                Bitmap image = StringToBitmap(account.image);
                 ImageSource imgSource = converter(image);
                 PictureBox.Source = imgSource;
             }
@@ -111,7 +111,7 @@ namespace AsyncClient
 
             } else
             {
-                RestRequest request = new RestRequest("api/data/" + account.Id);
+                RestRequest request = new RestRequest("api/data/" + account.id);
                 RestResponse restResponse = restClient.Delete(request);
                 if (restResponse.StatusCode == System.Net.HttpStatusCode.OK)
                 {
@@ -136,15 +136,15 @@ namespace AsyncClient
             }
             else
             {
-                RestRequest request = new RestRequest("api/data/" + account.Id);
+                RestRequest request = new RestRequest("api/data/" + account.id);
                 RestResponse restResponse = restClient.Delete(request);
                 if (restResponse.StatusCode == System.Net.HttpStatusCode.OK)
                 {
-                    account.FirstName = FNameBox.Text;
-                    account.LastName = LNameBox.Text;
-                    account.Balance = decimal.Parse(Balance.Text);
-                    account.AcctNo = AcctNo.Text;
-                    account.Pin = Pin.Text;
+                    account.firstName = FNameBox.Text;
+                    account.lastName = LNameBox.Text;
+                    account.balance = Int32.Parse(Balance.Text);
+                    account.acctNo = Int32.Parse(AcctNo.Text);
+                    account.pin = Int32.Parse(Pin.Text);
                     request = new RestRequest("api/data/");
                     request.AddObject(account);
 
@@ -161,7 +161,7 @@ namespace AsyncClient
         private void Insert_Click(object sender, RoutedEventArgs e)
         {
 
-            Account account = new Account(0, FNameBox.Text, LNameBox.Text, decimal.Parse(Balance.Text), AcctNo.Text, Pin.Text, uploadIMG);
+            StudentTable account = new StudentTable(0, FNameBox.Text, LNameBox.Text, Int32.Parse(Balance.Text), Int32.Parse(AcctNo.Text), Int32.Parse(Pin.Text), uploadIMG);
             RestRequest request = new RestRequest("api/data/");
             request.AddObject(account);
             

@@ -11,7 +11,8 @@ using System.Net.Http;
 using System.Reflection;
 using System.Web.Http;
 using System.Web.Http.Description;
-using WebDatabaseAPI.Models;
+using DatabaseAPI.Models;
+using System.Diagnostics;
 
 namespace BusinessTierAPI.Controllers
 {
@@ -23,31 +24,32 @@ namespace BusinessTierAPI.Controllers
         [HttpPut]
         public void Put()
         {
-            Account account;
-            RestClient restClient = new RestClient("http://localhost:58308/");
+            Debug.WriteLine("Helloo I am here!");
+            StudentTable account;
+            RestClient restClient = new RestClient("http://localhost:54227/");
             RestRequest restRequest;
             RestResponse restResponse;
 
-            restRequest = new RestRequest("api/Accounts/");
+            restRequest = new RestRequest("api/StudentTables/");
             restResponse = restClient.Get(restRequest);
-            IEnumerable<Account> accounts = JsonConvert.DeserializeObject<IEnumerable<Account>>(restResponse.Content);
+            List<StudentTable> accounts = JsonConvert.DeserializeObject<List<StudentTable>>(restResponse.Content);
             if (accounts.Count() == 0)
             {
                 for (int i = 1; i <= 100; i++)
                 {
                     account = GetNextAccount(i, i);
-                    restRequest = new RestRequest("api/Accounts/");
+                    restRequest = new RestRequest("api/StudentTables/");
                     restRequest.AddBody(account);
                     restResponse = restClient.Post(restRequest);
                 }
             } else
             {
-                Account lastAccount = accounts.Last();
+                StudentTable lastAccount = accounts.Last();
 
-                for (int i = lastAccount.Id + 1; i <= lastAccount.Id + 100; i++)
+                for (int i = lastAccount.id + 1; i <= lastAccount.id + 100; i++)
                 {
                     account = GetNextAccount(i, i);
-                    restRequest = new RestRequest("api/Accounts/");
+                    restRequest = new RestRequest("api/StudentTables/");
                     restRequest.AddBody(account);
                     restResponse = restClient.Post(restRequest);
                 }
@@ -72,17 +74,17 @@ namespace BusinessTierAPI.Controllers
             return lastName;
         }
 
-        private uint GetPIN(int seed)
+        private int GetPIN(int seed)
         {
             Random random = new Random(seed);
-            uint pin = (uint)random.Next(0, 10000);
+            int pin = random.Next(0, 10000);
             return pin;
         }
 
-        private uint GetAcctNo(int seed)
+        private int GetAcctNo(int seed)
         {
             Random random = new Random(seed);
-            uint accNum = (uint)random.Next(0, 10000000);
+            int accNum = random.Next(0, 10000000);
             return accNum;
         }
 
@@ -109,16 +111,16 @@ namespace BusinessTierAPI.Controllers
             return profilePic;
         }
 
-        public Account GetNextAccount(int seed, int id)
+        public StudentTable GetNextAccount(int seed, int id)
         {
-            uint pin = GetPIN(seed);
-            uint acctNo = GetAcctNo(seed);
+            int pin = GetPIN(seed);
+            int acctNo = GetAcctNo(seed);
             string firstName = GetFirstName(seed);
             string lastName = GetLastName(seed);
-            decimal balance = GetBalance(seed);
+            int balance = GetBalance(seed);
             Bitmap image = GetProfilePic();
             string bitmapImage = BitmapToString(image);
-            return new Account(id, firstName, lastName, balance, acctNo.ToString(), pin.ToString(), bitmapImage);
+            return new StudentTable(id, firstName, lastName, balance, acctNo, pin, bitmapImage);
         }
 
         private string BitmapToString(Bitmap bitmap)
