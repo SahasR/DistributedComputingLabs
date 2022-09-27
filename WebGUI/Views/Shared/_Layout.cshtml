@@ -4,10 +4,23 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
+    <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
-    <div>
+    <div id="header"><h1></h1></div>
+    <div id="navigation">
+        <ul>
+            <li><a href="/Home">Home</a></li>
+            <li><a href="/Students">Students</a></li>
+        </ul>
+    </div>
+    <div id="main">
         @RenderBody()
     </div>
+    <div id="footer">
+        <p> Developed by Sahas Gunasekara for Sajib Mistry for Curtin University</p>
+    </div>
+    <script src="~/js/site.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
 </body>
 </html>

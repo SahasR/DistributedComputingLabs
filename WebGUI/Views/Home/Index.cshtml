@@ -1,4 +1,26 @@
 ﻿@{
-
+    @using WebGUI.Models;
+    @model IEnumerable<StudentTable>
 }
-<h1>Your are in the body of index!</h1>
+<div id="tableview">
+    <table>
+        <tr>
+            <td>ID</td>
+            <td>First Name</td>
+            <td>Last Name</td>
+            <td>Account Number</td>
+            <td>Balance</td>
+            <td>Pin</td>
+        </tr>
+        @foreach(var student in Model){
+            <tr>
+                <td>@student.id</td>
+                <td>@student.firstName</td>
+                <td>@student.lastName</td>
+                <td>@student.acctNo</td>
+                <td>@student.balance</td>
+                <td>@student.pin</td>
+            </tr>
+        }
+    </table>
+</div>
