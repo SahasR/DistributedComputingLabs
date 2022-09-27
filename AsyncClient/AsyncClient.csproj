@@ -135,10 +135,6 @@
       <Project>{B1BFA712-024C-46EB-B544-CA3B2FEE2325}</Project>
       <Name>APIClasses</Name>
     </ProjectReference>
-    <ProjectReference Include="..\WebDatabaseAPI\WebDatabaseAPI.csproj">
-      <Project>{ac5c106a-f90b-4e49-b761-137e61b064f8}</Project>
-      <Name>WebDatabaseAPI</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
