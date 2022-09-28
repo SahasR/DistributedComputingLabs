@@ -13,15 +13,72 @@
         <input type="text" id="SBalance" placeholder="Balance" />
         <input type="text" id="SPin" placeholder="Pin"/>
     </form>
-    <img id="SImg" src="" />
+    <input type="file" id="SImgInput" onchange="encodeImageFileAsURL(this)" accept="image/*">
     <button id="search" onclick="search()">Search</button>
     <button id="insert" onclick="insert()">Insert</button>
     <button id="update" onclick="update()">Update</button>
-    <button id="delete" onclick="delete()">Delete</button>
-    <button id="generate" onclick="generate()">Generate</button>
+    <button id="delete" onclick="deleteItem()">Delete</button>
+    <button id="generate" onclick="generate()">Generate</button>    
+</div>
+
+<div class="container">
+    <img id="SImg" src=""/>
 </div>
 
 <script>
+
+    var image = null;
+
+    function encodeImageFileAsURL(element) {
+        let file = element.files[0];
+        let reader = new FileReader();
+        reader.onloadend = function () {
+            const imgArray = reader.result.split(",");
+            image = imgArray[1];
+        }
+        reader.readAsDataURL(file);
+    }
+
+    function deleteItem(){
+        $.ajax({
+            url: '/students/delete/' + $('#SId').val(),
+            type: 'DELETE',
+            success: function (data, textStatus, jQxhr) {
+                alert("Data Deleted");
+            },
+            error: function (jqXhr, textStatus, errorThrown) {
+                alert("No such Index");
+                console.log(errorThrown);
+            }
+        });
+    }
+
+    function update(){
+        $.ajax({
+            url: '/students/update/',
+            type: 'PUT',
+            contentType: 'application/json',
+            data: JSON.stringify(
+                {
+                    "id": $("#SId").val(),
+                    "firstName": $("#SFirstName").val(),
+                    "lastName": $("#SLastName").val(),
+                    "balance": $("#SBalance").val(),
+                    "acctNo": $("#SAcctNumber").val(),
+                    "pin": $("#SPin").val(),
+                    "image": image
+                }
+            ),
+            success: function (data, textStatus, jQxhr) {
+                alert("Data Inserted!");
+            },
+            error: function (jqXhr, textStatus, errorThrown) {
+                alert("Some Data was Missing.");
+                console.log(errorThrown);
+            }
+        });
+    }
+
     function search(){
         $.ajax({
             url: '/students/search/' + $('#SId').val(),
@@ -37,6 +94,7 @@
                 $("#SAcctNumber").val(obj.acctNo);
                 $("#SPin").val(obj.pin);
                 $("#SImg").attr("src", "data:image/gif;base64," + obj.image);
+                image = obj.image;
             },
             error: function (jqXhr, textStatus, errorThrown) {
                 console.log(errorThrown);
@@ -45,23 +103,41 @@
     }
 
     function insert(){
-        $.ajax({
-            url: '/students/insert/',
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify(
-                {
-                    "id": $("#SId").val(),
-                    "firstName": $("#SFirstName").val(),
-                    "lastName": $("#SLastName").val() ,
-                    "balance": $("#SBalance").val(),
-                    "acctNo": $("#SAcctNumber").val(),
-                    "pin": $("#SPin").val(),
-                    "image": "0"
+        if (image != null){
+            $.ajax({
+                url: '/students/insert/',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(
+                    {
+                        "id": $("#SId").val(),
+                        "firstName": $("#SFirstName").val(),
+                        "lastName": $("#SLastName").val(),
+                        "balance": $("#SBalance").val(),
+                        "acctNo": $("#SAcctNumber").val(),
+                        "pin": $("#SPin").val(),
+                        "image": image
+                    }
+                ),
+                success: function (data, textStatus, jQxhr) {
+                    alert("Data Inserted!");
+                },
+                error: function (jqXhr, textStatus, errorThrown) {
+                    alert("Inserted Duplicated Value, use the Update Function");
+                    console.log(errorThrown);
                 }
-            ),
+            });
+        } else {
+            alert("No Image selected!");
+        }  
+    }
+
+    function generate() {
+        $.ajax({
+            url: '/students/generate/',
+            type: 'PUT',
             success: function (data, textStatus, jQxhr) {
-                alert("Data Inserted!");
+                alert("Data Generated!");
             },
             error: function (jqXhr, textStatus, errorThrown) {
                 alert("Error");
@@ -69,4 +145,5 @@
             }
         });
     }
+
 </script>

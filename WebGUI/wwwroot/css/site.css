@@ -18,6 +18,15 @@ div#navigation ul {
     background-color: red;
 }
 
+.container {
+    width: 10%;
+}
+
+.container img {
+    max-height: 100%;
+    max-width: 100%;
+}
+
 div#navigation li {
     float: left;
 }
