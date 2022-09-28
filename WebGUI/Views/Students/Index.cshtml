@@ -64,7 +64,34 @@
                 alert("Data Inserted!");
             },
             error: function (jqXhr, textStatus, errorThrown) {
+                alert("Inserted Duplicated Value, use the Update Function");
+                console.log(errorThrown);
+            }
+        });
+    }
+
+    function generate() {
+        $.ajax({
+            url: '/students/generate/',
+            type: 'PUT',
+            success: function (data, textStatus, jQxhr) {
+                alert("Data Generated!");
+            },
+            error: function (jqXhr, textStatus, errorThrown) {
                 alert("Error");
+                console.log(errorThrown);
+            }
+        });
+    }
+
+    function delete(){
+        $.ajax({
+            url: '/students/delete/' + $('#SId').val(),
+            type: 'DELETE',
+            success: function (data, textStatus, jQxhr) {
+                alert("Data Deleted!");
+            },
+            error: function (jqXhr, textStatus, errorThrown) {
                 console.log(errorThrown);
             }
         });

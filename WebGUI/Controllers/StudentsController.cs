@@ -1,12 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RestSharp;
+using System.Diagnostics;
 using System.Security.Principal;
 using WebGUI.Models;
 
 namespace WebGUI.Controllers
 {
+
     public class StudentsController : Controller
     {
+
         public IActionResult Index()
         {
             return View();
@@ -28,14 +31,39 @@ namespace WebGUI.Controllers
             RestClient restClient = new RestClient("http://localhost:51641/");
             RestRequest request = new RestRequest("api/data/");
             request.AddObject(account);
-            RestResponse response = restClient.Post(request);
-            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            try
             {
+                RestResponse response = restClient.Post(request);
                 return Ok(response.Content);
-            } else
+            } catch (HttpRequestException e)
             {
-                return BadRequest(response.Content);
+                return BadRequest(e.Message);
             }
+        }
+
+        [HttpDelete]
+        public IActionResult Delete(int id)
+        {
+            Debug.WriteLine("Hello I am here at Delete!");
+            RestClient restClient = new RestClient("http://localhost:51641/");
+            RestRequest request = new RestRequest("api/data/" + id);
+            RestResponse restResponse = restClient.Delete(request);
+            if (restResponse.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                return Ok(restResponse.Content);
+            } else{
+                return NotFound();
+            }
+        }
+
+        [HttpPut]
+        public IActionResult Generate()
+        {
+            Debug.WriteLine("Hello I am here at Generate!");
+            RestClient restClient = new RestClient("http://localhost:51641/");
+            RestRequest request = new RestRequest("api/generator/");
+            RestResponse restResponse = restClient.Put(request);
+            return Ok(restResponse.Content);
         }
     }
 }

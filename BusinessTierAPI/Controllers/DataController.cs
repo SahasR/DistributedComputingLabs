@@ -21,6 +21,7 @@ namespace BusinessTierAPI.Controllers
         [ResponseType(typeof(void))]
         public IHttpActionResult DeleteAccount(int index)
         {
+            Debug.WriteLine("Hello I am here!");
             RestClient restClient = new RestClient("http://localhost:54227/");
             RestRequest restRequest = new RestRequest("api/StudentTables/" + index);
             RestResponse restResponse = restClient.Delete(restRequest);
@@ -48,8 +49,14 @@ namespace BusinessTierAPI.Controllers
             {
                 restRequest = new RestRequest("api/StudentTables/");
                 restRequest.AddBody(account);
-                restResponse = restClient.Post(restRequest);
-                return Ok();
+                try
+                {
+                    restResponse = restClient.Post(restRequest);
+                    return Ok();
+                } catch (HttpRequestException e)
+                {
+                    return BadRequest();
+                }     
             }
             else
             {
