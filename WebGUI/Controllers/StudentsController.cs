@@ -44,7 +44,6 @@ namespace WebGUI.Controllers
         [HttpDelete]
         public IActionResult Delete(int id)
         {
-            Debug.WriteLine("Hello I am here at Delete!");
             RestClient restClient = new RestClient("http://localhost:51641/");
             RestRequest request = new RestRequest("api/data/" + id);
             RestResponse restResponse = restClient.Delete(request);
@@ -53,6 +52,26 @@ namespace WebGUI.Controllers
                 return Ok(restResponse.Content);
             } else{
                 return NotFound();
+            }
+        }
+
+        [HttpPut]
+        public IActionResult Update([FromBody] StudentTable account)
+        {
+            RestClient restClient = new RestClient("http://localhost:51641/");
+            RestRequest request = new RestRequest("api/data/" + account.id);
+            RestResponse response = restClient.Delete(request);
+     
+            request = new RestRequest("api/data/");
+            request.AddObject(account);
+            try
+            {
+                response = restClient.Post(request);
+                return Ok(response.Content);
+            }
+            catch (HttpRequestException e)
+            {
+                return BadRequest(e.Message);
             }
         }
 
